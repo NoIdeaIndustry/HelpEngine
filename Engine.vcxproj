@@ -127,6 +127,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)libraries/GLFW/sources;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -149,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="libraries\GLAD\sources\glad.c" />
     <ClCompile Include="libraries\IMGUI\imgui.cpp" />
     <ClCompile Include="libraries\IMGUI\imgui_demo.cpp" />
     <ClCompile Include="libraries\IMGUI\imgui_draw.cpp" />
@@ -178,6 +180,8 @@
     <ClCompile Include="sources\Resources\ResourceManager.cpp" />
     <ClCompile Include="sources\Resources\Texture.cpp" />
     <ClCompile Include="Sources\Main.cpp" />
+    <ClCompile Include="sources\Threading\PoolSystem.cpp" />
+    <ClCompile Include="sources\Threading\Thread.cpp" />
     <ClCompile Include="sources\Utils\Debug.cpp" />
     <ClCompile Include="sources\Utils\Input.cpp" />
   </ItemGroup>
@@ -203,6 +207,9 @@
     <ClInclude Include="includes\Resources\Resource.hpp" />
     <ClInclude Include="includes\Resources\ResourceManager.hpp" />
     <ClInclude Include="includes\Resources\Texture.hpp" />
+    <ClInclude Include="includes\Threading\PoolSystem.hpp" />
+    <ClInclude Include="includes\Threading\Thread.hpp" />
+    <ClInclude Include="includes\Utils\Colors.hpp" />
     <ClInclude Include="includes\Utils\Debug.hpp" />
     <ClInclude Include="includes\Utils\Input.hpp" />
     <ClInclude Include="includes\Utils\Time.hpp" />

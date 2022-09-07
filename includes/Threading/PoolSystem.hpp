@@ -50,7 +50,7 @@ namespace NThread {
 				tasks.push(task);
 				lockRun.clear(std::memory_order_release);
 			}
-			taskCondition.notify_one();
+			//taskCondition.notify_one();
 		}
 
 		Task queryTask(std::string pName) {
@@ -58,7 +58,7 @@ namespace NThread {
 
 			while (lockQuery.test_and_set(std::memory_order_acquire)) {
 				while (tasks.empty()) {
-					taskCondition.wait_until(lockQuery);
+					//taskCondition.wait_until(lockQuery);
 				}
 			}
 
