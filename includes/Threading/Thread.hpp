@@ -21,6 +21,8 @@ namespace NThread {
 			return thread;
 		}
 
+		void registerTask(std::function<void()> pTask);
+
 	private:
 		std::string name;
 		std::thread thread;

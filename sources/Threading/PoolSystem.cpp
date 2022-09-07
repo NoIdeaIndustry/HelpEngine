@@ -1,6 +1,6 @@
 #include "Threading/PoolSystem.hpp"
 
-namespace Thread {
+namespace NThread {
 	Pool::Pool() {
 	}
 

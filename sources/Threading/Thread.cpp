@@ -18,4 +18,8 @@ namespace NThread {
 
 	Thread::~Thread() {
 	}
+
+	void Thread::registerTask(std::function<void()> pTask) {
+		thread = std::move(std::thread(pTask));
+	}
 }

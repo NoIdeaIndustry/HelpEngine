@@ -46,9 +46,9 @@ namespace NThread {
 		}
 
 		void runTask(Task task) {
-			{
-				std::lock_guard<std::mutex> tasks_guard{ tasksLock };
+			while (lockRun.test_and_set(std::memory_order_acquire)) {
 				tasks.push(task);
+				lockRun.clear(std::memory_order_release);
 			}
 			taskCondition.notify_one();
 		}
@@ -56,24 +56,29 @@ namespace NThread {
 		Task queryTask(std::string pName) {
 			std::cout << "\"" << pName << "\"" << " is asking for a task..." << std::endl;
 
-			std::unique_lock<std::mutex> tasks_guard{ tasksLock };
-			while (tasks.empty())
-				taskCondition.wait(tasks_guard);
+			while (lockQuery.test_and_set(std::memory_order_acquire)) {
+				while (tasks.empty()) {
+					taskCondition.wait_until(lockQuery);
+				}
+			}
 
 			std::cout << "\"" << pName << "\"" << " found a task!" << std::endl;
 
 			Task task = tasks.front();
 			tasks.pop();
-			tasks_guard.unlock();
+			lockQuery.clear(std::memory_order_release);
 			return task;
 		}
 
 		bool isRegistering = true;
 	private:
+		std::atomic_flag lockQuery = ATOMIC_FLAG_INIT;
+		std::atomic_flag lockRun = ATOMIC_FLAG_INIT;
+
+		std::atomic_bool canGoThru{ false };
 		std::atomic_bool shouldThreadsStops{ false };
+
 		std::vector<Thread*> pool;
-		std::mutex tasksLock;
-		std::condition_variable taskCondition;
 		std::queue<Task> tasks;
 	};
 }
