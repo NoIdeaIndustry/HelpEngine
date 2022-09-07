@@ -1,0 +1,7 @@
+[Dd]ebug/
+.vs/
+.vscode/
+
+*.filters
+*.user
+x64/
