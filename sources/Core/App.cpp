@@ -21,6 +21,7 @@
 #include <IMGUI/imgui_impl_opengl3.h>
 #include <IMGUI/imgui_impl_glfw.h>
 #include "Physics/CollisionDisplay.hpp"
+#include <thread>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <STB_Image/stb_image.h>
@@ -96,58 +97,52 @@ void App::Update()
 
 #pragma region Shader
 
-	ResourceManager::Create(new Shader(Shader::VERTEX), "VertexShader", "Resources\\Shaders\\VertexShader.vert");
-	ResourceManager::Create(new Shader(Shader::FRAGMENT), "FragmentShader", "Resources\\Shaders\\FragmentShader.frag");
+	ResourceManager::Create(new Shader(Shader::VERTEX), "VertexShader", "resources\\Shaders\\VertexShader.vert");
+	ResourceManager::Create(new Shader(Shader::FRAGMENT), "FragmentShader", "resources\\Shaders\\FragmentShader.frag");
 
 	int vertShader = ((Shader*)ResourceManager::Get("VertexShader"))->shaderKey;
 	int fragShader = ((Shader*)ResourceManager::Get("FragmentShader"))->shaderKey;
 
 	ResourceManager::Create(new ShaderProgram(vertShader, fragShader), "ShaderProgram");
 	
-	
-#pragma endregion
-
-#pragma region Mesh
-
-	using namespace std;
-	
-		
-		
-		ResourceManager::Create(new Model(), "Blaziken", "Resources\\Obj\\blaziken.obj");
-		ResourceManager::Create(new Model(), "Bidoof", "Resources\\Obj\\Bidoof.obj");
-		ResourceManager::Create(new Model(), "Cube", "Resources\\Obj\\cube.obj");
-		ResourceManager::Create(new Model(), "Sphere", "Resources\\Obj\\sphere.obj");
-		ResourceManager::Create(new Model(), "Boo", "Resources\\Obj\\boo.obj");
-		ResourceManager::Create(new Model(), "Goomba", "Resources\\Obj\\goomba.obj");
-		ResourceManager::Create(new Model(), "Maskass", "Resources\\Obj\\maskass.obj");
-
-		
-		CollisionDisplay::CollisionMesh::InitSphereMesh();
-		CollisionDisplay::CollisionMesh::InitCubeMesh();
-		
-#pragma endregion
-
-#pragma region Texture
-
-		Texture::InitSampler();
-		ResourceManager::Create(new Texture(), "Message", "Resources\\Textures\\Message_Icone.png");
-		ResourceManager::Create(new Texture(), "Error", "Resources\\Textures\\Error_Icone.png");
-		ResourceManager::Create(new Texture(), "Warning", "Resources\\Textures\\Warning_Icone.png");
-
-		ResourceManager::Create(new Texture(), "BippaDh", "Resources\\Textures\\BippaDh.png");
-		ResourceManager::Create(new Texture(), "dog", "Resources\\Textures\\sample2.png");
-		ResourceManager::Create(new Texture(), "Blaziken Texture", "Resources\\Textures\\BlazikenTexture.png");
-		ResourceManager::Create(new Texture(), "Goomba Texture", "Resources\\Textures\\goomba.png");
-		ResourceManager::Create(new Texture(), "Boo Texture", "Resources\\Textures\\boo.png");
-		ResourceManager::Create(new Texture(), "Maskass Texture", "Resources\\Textures\\heyho_tex_hr.png");
-		ResourceManager::Create(new Texture(), "Ground Texture", "Resources\\Textures\\sol.png");
-
-
-		
-		ResourceManager::Create(new Material((Texture*)ResourceManager::Get("Goomba Texture"), Core::myMath::Vec3(1, 1, 1), 2), "goomba mat");
-		ResourceManager::Create(new Material((Texture*)ResourceManager::Get("Ground Texture"), Core::myMath::Vec3(1, 1, 1), 2), "Ground Mat");
 
 #pragma endregion
+
+	std::thread resource { ResourceManager::ReloadResources };
+	//resource.join();
+	ResourceManager::ReloadResources();
+
+	/*ResourceManager::Create(new Model(), "Blaziken", "Resources\\Objects\\blaziken.obj");
+	ResourceManager::Create(new Model(), "Bidoof", "Resources\\Objects\\Bidoof.obj");
+	ResourceManager::Create(new Model(), "Cube", "Resources\\Objects\\cube.obj");
+	ResourceManager::Create(new Model(), "Sphere", "Resources\\Objects\\sphere.obj");
+	ResourceManager::Create(new Model(), "Boo", "Resources\\Objects\\boo.obj");
+	ResourceManager::Create(new Model(), "Goomba", "Resources\\Objects\\goomba.obj");
+	ResourceManager::Create(new Model(), "Maskass", "Resources\\Objects\\maskass.obj");
+
+
+	CollisionDisplay::CollisionMesh::InitSphereMesh();
+	CollisionDisplay::CollisionMesh::InitCubeMesh();
+
+	Texture::InitSampler();
+	ResourceManager::Create(new Texture(), "BippaDh", "Resources\\Textures\\BippaDh.png");
+	ResourceManager::Create(new Texture(), "dog", "Resources\\Textures\\sample2.png");
+	ResourceManager::Create(new Texture(), "Blaziken Texture", "Resources\\Textures\\BlazikenTexture.png");
+	ResourceManager::Create(new Texture(), "Goomba Texture", "Resources\\Textures\\goomba.png");
+	ResourceManager::Create(new Texture(), "Boo Texture", "Resources\\Textures\\boo.png");
+	ResourceManager::Create(new Texture(), "Maskass Texture", "Resources\\Textures\\heyho_tex_hr.png");
+	ResourceManager::Create(new Texture(), "Ground Texture", "Resources\\Textures\\sol.png");
+
+	ResourceManager::Create(new Texture(), "Message", "Resources\\Textures\\Message_Icone.png");
+	ResourceManager::Create(new Texture(), "Error", "Resources\\Textures\\Error_Icone.png");
+	ResourceManager::Create(new Texture(), "Warning", "Resources\\Textures\\Warning_Icone.png");
+
+
+
+	ResourceManager::Create(new Material((Texture*)ResourceManager::Get("Goomba Texture"), Core::myMath::Vec3(1, 1, 1), 2), "goomba mat");
+	ResourceManager::Create(new Material((Texture*)ResourceManager::Get("Ground Texture"), Core::myMath::Vec3(1, 1, 1), 2), "Ground Mat");*/
+
+
 	MainMenu mainMenu;
 	Core::Debug::Log::Init();
 
@@ -218,7 +213,7 @@ void App::Update()
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
 	glfwTerminate();
-
+	resource.join();
 }
 
 

@@ -18,6 +18,7 @@ public :
 	static Resource* Get(const std::string& name);
 	//static void Delete(const std::string& name);
 	static void Clear();
+	static void ReloadResources();
 
 private :
 	static std::unordered_map<std::string, Resource*> resourceMap;

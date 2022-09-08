@@ -4,10 +4,10 @@
 
 #include "Math.hpp"
 #include <string>
-#include <iostream>
 #include "Core/App.hpp"
 #include <iostream>
 #include <map>
+#include "Threading/PoolSystem.hpp"
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -61,9 +61,17 @@ void APIENTRY glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 
 int main()
 {
-	
-	
-	
+	NThread::Pool pool;
+	for (int i = 0; i < 5; i++) {
+		pool.registerThread(new NThread::Thread(pool, std::to_string(i)));
+	}
+
+	for (int i = 0; i < 500; i++) {
+		pool.registerTask([&]() {
+		});
+	}
+
+
 	using namespace Core;
 	AppInitializer init =
 	{
@@ -77,9 +85,6 @@ int main()
 	App app;
 	app.Init(init);
 	app.Update();
-
-	
-
 	
 	return 0;
 }

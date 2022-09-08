@@ -5,3 +5,4 @@
 *.filters
 *.user
 x64/
+[Bb]uild/
