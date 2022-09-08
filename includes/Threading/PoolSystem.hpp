@@ -19,18 +19,15 @@ namespace NThread {
 		Pool();
 		~Pool();
 
-		std::vector<Thread*> getPool() 
-		{
+		std::vector<Thread*> getPool() {
 			return pool;
 		}
 
-		void registerThread(Thread* t) 
-		{
+		void registerThread(Thread* t) {
 			pool.push_back(t);
 		}
 
-		void unregisterThread(Thread& t) 
-		{
+		void unregisterThread(Thread& t) {
 			for (int i = 0; i < pool.size(); i++) {
 				if (t.getName() == pool.at(i)->getName()) {
 					pool.erase(pool.begin() + i);
@@ -39,13 +36,11 @@ namespace NThread {
 			}
 		}
 
-		void stopThreads() 
-		{
+		void stopPool() {
 			shouldThreadsStops = true;
 		}
 
-		bool shouldThreadStop() 
-		{
+		bool shouldStopPool() {
 			return shouldThreadsStops;
 		}
 
@@ -57,10 +52,19 @@ namespace NThread {
 			tasks_cond.notify_one();
 		}
 
-		Task queryTask(std::string pName) {
+		Task queryTask(Thread* t, std::string pName) {
 			queryMtx.lock();
 
-			while (tasks.empty());
+			t->setWorking(false);
+
+			while (tasks.empty()) {
+				if (!t->getWorking()) {
+					t->setWorking(false);
+				}
+				// continue
+			}
+
+			t->setWorking(true);
 
 			Task task = tasks.front();
 			tasks.pop();

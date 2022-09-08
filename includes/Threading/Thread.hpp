@@ -21,10 +21,18 @@ namespace NThread {
 			return thread;
 		}
 
-		void registerTask(std::function<void()> pTask);
+		bool getWorking() {
+			return isWorking;
+		}
+
+		void setWorking(const bool& pIsWorking) {
+			isWorking = pIsWorking;
+		}
 
 	private:
 		std::string name;
 		std::thread thread;
+
+		bool isWorking = false;
 	};
 }

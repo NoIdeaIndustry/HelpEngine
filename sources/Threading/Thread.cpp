@@ -9,8 +9,8 @@ namespace NThread {
 		name = pName + " - Thread";
 
 		thread = std::thread([&]() {
-			while (!pPool.shouldThreadStop()) {
-				pPool.queryTask(name)();
+			while (!pPool.shouldStopPool()) {
+				pPool.queryTask(this, name)();
 			}
 		});
 	}

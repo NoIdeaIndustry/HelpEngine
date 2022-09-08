@@ -68,9 +68,9 @@ int main()
 
 	for (int i = 0; i < 500; i++) {
 		pool.registerTask([&]() {
+			// function aka Task (std::function<void()> to register
 		});
 	}
-
 
 	using namespace Core;
 	AppInitializer init =
@@ -86,6 +86,11 @@ int main()
 	app.Init(init);
 	app.Update();
 	
+	pool.stopPool();
+	for (NThread::Thread* t : pool.getPool()) {
+		t->getThread().join();
+	}
+
 	return 0;
 }
 
