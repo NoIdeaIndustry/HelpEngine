@@ -14,21 +14,16 @@ using namespace Physics;
 using namespace CollisionDisplay;
 using namespace LowRenderer;
 
-Vec3 SphereCollider::FindFurthestPoint(const Vec3& direction) const
-{
+Vec3 SphereCollider::FindFurthestPoint(const Vec3& direction) const {
 	return gameObject->transform.GetGlobalPosition() + (direction.Normalized() * radius);
 }
 
-SphereCollider::SphereCollider(float _radius)
-	: radius(_radius)
-{
+SphereCollider::SphereCollider(float _radius) : radius(_radius) {
 
 }
 
-void SphereCollider::Render() const
-{
-	if (!DrawCollider)
-	{
+void SphereCollider::Render() const {
+	if (!DrawCollider) {
 		return;
 	}
 	glUseProgram(Renderer::shaderProgram);
@@ -46,46 +41,37 @@ void SphereCollider::Render() const
 	glDrawElements(GL_TRIANGLES, CollisionMesh::Sphere.indexCount, GL_UNSIGNED_INT, 0);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	
 }
 
-void SphereCollider::Start()
-{
+void SphereCollider::Start() {
 	Collision::colliders.push_back(this);
 	rigidBody = gameObject->GetComponent<RigidBody>();
 }
 
-void SphereCollider::Update()
-{
+void SphereCollider::Update() {
 }
 
-void SphereCollider::Destroy()
-{
+void SphereCollider::Destroy() {
 	Collision::colliders.erase(std::remove(Collision::colliders.begin(), Collision::colliders.end(), this), Collision::colliders.end());
 }
 
-void SphereCollider::DisplayGUI()
-{
-	if (ImGui::CollapsingHeader("Sphere Collider"))
-	{
+void SphereCollider::DisplayGUI() {
+	if (ImGui::CollapsingHeader("Sphere Collider")) {
 		ImGui::Checkbox("Draw Collider", &DrawCollider);
 		ImGui::DragFloat("Radius", &radius, 0.01f, 0.01f);
 	}
 }
 
 
-Vec3 CubeCollider::FindFurthestPoint(const Vec3& direction) const
-{
+Vec3 CubeCollider::FindFurthestPoint(const Vec3& direction) const {
 	Vec3 res;
 	float max = -FLT_MAX;
 
-	for (Vec3 vertex : vertices)
-	{
+	for (Vec3 vertex : vertices) {
 		Vec3 globalVertex = (mat4x4::Scale(Vec3(size.x, size.y, size.z)) * gameObject->transform.GetModel() * Vec4(vertex, 1)).toVec3();
 		float dot = direction * globalVertex;
-		if (dot > max)
-		{
+
+		if (dot > max) {
 			max = dot;
 			res = globalVertex;
 		}
@@ -93,8 +79,7 @@ Vec3 CubeCollider::FindFurthestPoint(const Vec3& direction) const
 	return res;
 }
 
-void CubeCollider::Start()
-{
+void CubeCollider::Start() {
 	vertices.push_back(Vec3(1, 1, 1));
 	vertices.push_back(Vec3(1, -1, 1));
 	vertices.push_back(Vec3(-1, -1, 1));
@@ -111,14 +96,11 @@ void CubeCollider::Start()
 	rigidBody = gameObject->GetComponent<RigidBody>();
 }
 
-void CubeCollider::Update()
-{
+void CubeCollider::Update() {
 }
 
-void CubeCollider::Render() const
-{
-	if (!DrawCollider)
-	{
+void CubeCollider::Render() const {
+	if (!DrawCollider) {
 		return;
 	}
 	glUseProgram(Renderer::shaderProgram);
@@ -138,15 +120,12 @@ void CubeCollider::Render() const
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void CubeCollider::Destroy()
-{
+void CubeCollider::Destroy() {
 	Collision::colliders.erase(std::remove(Collision::colliders.begin(), Collision::colliders.end(), this), Collision::colliders.end());
 }
 
-void CubeCollider::DisplayGUI()
-{
-	if (ImGui::CollapsingHeader("Cube Collider"))
-	{
+void CubeCollider::DisplayGUI() {
+	if (ImGui::CollapsingHeader("Cube Collider")) {
 		ImGui::Checkbox("Draw Collider", &DrawCollider);
 		ImGui::DragFloat3("Size", &size.x, 0.01f, 0.01f);
 	}

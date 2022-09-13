@@ -32,48 +32,89 @@ using namespace LowRenderer;
 
 GLFWwindow* App::window;
 
-void App::Init(AppInitializer initializer)
-{
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
 
+	Core::App::p_AppSettings.APP_WIDTH = width;
+	Core::App::p_AppSettings.APP_HEIGHT = height;
+}
+
+void APIENTRY glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+	if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
+
+	std::cout << "---------------" << std::endl;
+	std::cout << "Debug message (" << id << "): " << message << std::endl;
+
+	switch (source)
+	{
+	case GL_DEBUG_SOURCE_API:             std::cout << "Source: API"; break;
+	case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   std::cout << "Source: Window System"; break;
+	case GL_DEBUG_SOURCE_SHADER_COMPILER: std::cout << "Source: Shader Compiler"; break;
+	case GL_DEBUG_SOURCE_THIRD_PARTY:     std::cout << "Source: Third Party"; break;
+	case GL_DEBUG_SOURCE_APPLICATION:     std::cout << "Source: Application"; break;
+	case GL_DEBUG_SOURCE_OTHER:           std::cout << "Source: Other"; break;
+	} std::cout << std::endl;
+
+	switch (type)
+	{
+	case GL_DEBUG_TYPE_ERROR:               std::cout << "Type: Error"; break;
+	case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: std::cout << "Type: Deprecated Behaviour"; break;
+	case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  std::cout << "Type: Undefined Behaviour"; break;
+	case GL_DEBUG_TYPE_PORTABILITY:         std::cout << "Type: Portability"; break;
+	case GL_DEBUG_TYPE_PERFORMANCE:         std::cout << "Type: Performance"; break;
+	case GL_DEBUG_TYPE_MARKER:              std::cout << "Type: Marker"; break;
+	case GL_DEBUG_TYPE_PUSH_GROUP:          std::cout << "Type: Push Group"; break;
+	case GL_DEBUG_TYPE_POP_GROUP:           std::cout << "Type: Pop Group"; break;
+	case GL_DEBUG_TYPE_OTHER:               std::cout << "Type: Other"; break;
+	} std::cout << std::endl;
+
+	switch (severity)
+	{
+	case GL_DEBUG_SEVERITY_HIGH:         std::cout << "Severity: high"; break;
+	case GL_DEBUG_SEVERITY_MEDIUM:       std::cout << "Severity: medium"; break;
+	case GL_DEBUG_SEVERITY_LOW:          std::cout << "Severity: low"; break;
+	case GL_DEBUG_SEVERITY_NOTIFICATION: std::cout << "Severity: notification"; break;
+	} std::cout << std::endl;
+	std::cout << std::endl;
+}
+
+
+void App::Init() {
 	// glfw: initialize and configure
 	// ------------------------------
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, initializer.major);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, initializer.minor);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, p_AppSettings.APP_MAJOR);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, p_AppSettings.APP_MINOR);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
 
 	// glfw window creation
 	// --------------------
-	window = glfwCreateWindow(initializer.width, initializer.height, initializer.name, NULL, NULL);
-	if (window == NULL)
-	{
+	window = glfwCreateWindow(p_AppSettings.APP_WIDTH, p_AppSettings.APP_HEIGHT, p_AppSettings.APP_NAME, NULL, NULL);
+	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		assert(false);
 		return;
 	}
 	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, initializer.framebuffer_size_callback);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		assert(false);
 		return;
 	}
 
-
 	GLint flags = 0;
 	glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-	{
+	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
 		glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(initializer.glDebugOutput, nullptr);
+		glDebugMessageCallback(glDebugOutput, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 	}
 
@@ -87,16 +128,10 @@ void App::Init(AppInitializer initializer)
 
 	//init Input System
 	Input::Init(window);
-
-	
-
 }
 
-void App::Update()
-{
-
+void App::Update() {
 #pragma region Shader
-
 	ResourceManager::Create(new Shader(Shader::VERTEX), "VertexShader", "resources\\Shaders\\VertexShader.vert");
 	ResourceManager::Create(new Shader(Shader::FRAGMENT), "FragmentShader", "resources\\Shaders\\FragmentShader.frag");
 
@@ -107,10 +142,9 @@ void App::Update()
 	
 
 #pragma endregion
-
 	std::thread resource { ResourceManager::ReloadResources };
-	//resource.join();
-	ResourceManager::ReloadResources();
+	resource.join();
+	//ResourceManager::ReloadResources();
 
 	/*ResourceManager::Create(new Model(), "Blaziken", "Resources\\Objects\\blaziken.obj");
 	ResourceManager::Create(new Model(), "Bidoof", "Resources\\Objects\\Bidoof.obj");
@@ -119,7 +153,6 @@ void App::Update()
 	ResourceManager::Create(new Model(), "Boo", "Resources\\Objects\\boo.obj");
 	ResourceManager::Create(new Model(), "Goomba", "Resources\\Objects\\goomba.obj");
 	ResourceManager::Create(new Model(), "Maskass", "Resources\\Objects\\maskass.obj");
-
 
 	CollisionDisplay::CollisionMesh::InitSphereMesh();
 	CollisionDisplay::CollisionMesh::InitCubeMesh();
@@ -137,8 +170,6 @@ void App::Update()
 	ResourceManager::Create(new Texture(), "Error", "Resources\\Textures\\Error_Icone.png");
 	ResourceManager::Create(new Texture(), "Warning", "Resources\\Textures\\Warning_Icone.png");
 
-
-
 	ResourceManager::Create(new Material((Texture*)ResourceManager::Get("Goomba Texture"), Core::myMath::Vec3(1, 1, 1), 2), "goomba mat");
 	ResourceManager::Create(new Material((Texture*)ResourceManager::Get("Ground Texture"), Core::myMath::Vec3(1, 1, 1), 2), "Ground Mat");*/
 
@@ -151,10 +182,7 @@ void App::Update()
 
 	glEnable(GL_DEPTH_TEST);
 
-	while (!glfwWindowShouldClose(window))
-	{
-		glfwGetWindowSize(window, &width, &height);
-
+	while (!glfwWindowShouldClose(window)) {
 		// input
 			// -----
 		glfwPollEvents();
@@ -175,8 +203,7 @@ void App::Update()
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		if(!mainMenu.isPressedPlay && !mainMenu.isPressedOptions)
-		{
+		if(!mainMenu.isPressedPlay && !mainMenu.isPressedOptions) {
 			mainMenu.DisplayGUI(window);
 		}
 		
@@ -198,8 +225,6 @@ void App::Update()
 
 	//Close log file();
 	
-
-
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -213,12 +238,10 @@ void App::Update()
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
 	glfwTerminate();
-	resource.join();
 }
 
 
-void App::processInput(GLFWwindow* _window)
-{
+void App::processInput(GLFWwindow* _window) {
 	if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(_window, true);
 }

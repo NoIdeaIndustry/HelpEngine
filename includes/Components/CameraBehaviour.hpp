@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Core/Scene.hpp"
 
 class CameraBehaviour : public Core::DataStructure::MonoBehaviour

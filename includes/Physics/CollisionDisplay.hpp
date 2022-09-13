@@ -6,13 +6,12 @@ namespace CollisionDisplay
 {
 	class CollisionMesh
 	{
-	public :
-
+	public:
 		static void InitCubeMesh();
-
 		static void InitSphereMesh();
-
 		static inline Resources::Model Cube, Sphere;
-	private :
+
+	private:
+
 	};
 }

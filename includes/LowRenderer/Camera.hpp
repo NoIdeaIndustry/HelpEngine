@@ -1,25 +1,23 @@
 #pragma once
+
 #include "Math.hpp"
 #include "Core/Scene.hpp"
-
 
 namespace LowRenderer
 {
 	class Camera : public Core::DataStructure::MonoBehaviour
 	{
-	public :
+	public:
 		Camera();
-
-		
-		float fov = 50;
-
 		void Start() override;
 		void Update() override;
 		void DisplayGUI() override;
 
 		void Render();
 
-	private :
+		float fov = 50;
+
+	private:
 		void UpdateViewProjection();
 		void ManageInput();
 	};

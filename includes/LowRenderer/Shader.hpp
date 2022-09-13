@@ -1,15 +1,14 @@
 #pragma once
+
 #include "Resources/Resource.hpp"
 
 namespace Resources
 {
 	class Shader : public Resource
 	{
-	public :
-
+	public:
 		void Load(const std::string& filepath) override;
-		enum ShaderType
-		{
+		enum ShaderType {
 			VERTEX,
 			FRAGMENT
 		};
@@ -17,6 +16,5 @@ namespace Resources
 		int shaderKey;
 		ShaderType shaderType;
 		Shader(ShaderType _type);
-
 	};
 }

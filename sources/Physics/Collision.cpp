@@ -7,13 +7,11 @@ using namespace Physics;
 using namespace Core::myMath;
 using namespace std;
 
-Vec3 Support(const Collider& c1, const Collider& c2, Vec3 direction)
-{
+Vec3 Support(const Collider& c1, const Collider& c2, Vec3 direction) {
 	return c1.FindFurthestPoint(direction ) - c2.FindFurthestPoint(-direction);
 }
 
-bool ManageLine(vector<Vec3>& simplex, Vec3& direction)
-{
+bool ManageLine(vector<Vec3>& simplex, Vec3& direction) {
 	Vec3 a, b; 
 	a = simplex[0]; 
 	b = simplex[1];
@@ -22,12 +20,9 @@ bool ManageLine(vector<Vec3>& simplex, Vec3& direction)
 	ab = b - a; 
 	ao = -a;
 
-	if (ab * ao > 0)
-	{
+	if (ab * ao > 0) {
 		direction = (ab ^ ao) ^ ab;
-	}
-	else
-	{
+	} else {
 		simplex = { a };
 		direction = ao;
 	}
@@ -35,8 +30,7 @@ bool ManageLine(vector<Vec3>& simplex, Vec3& direction)
 	return false;
 }
 
-bool ManageTriangle(vector<Vec3>& simplex, Vec3& direction)
-{
+bool ManageTriangle(vector<Vec3>& simplex, Vec3& direction) {
 	Vec3 a, b, c;
 	a = simplex[0];
 	b = simplex[1];
@@ -49,32 +43,20 @@ bool ManageTriangle(vector<Vec3>& simplex, Vec3& direction)
 
 	Vec3 abc = ab ^ ac;
 
-	if ((abc ^ ac) * ao > 0)
-	{
-		if (ac * ao > 0)
-		{
+	if ((abc ^ ac) * ao > 0) {
+		if (ac * ao > 0) {
 			simplex.erase(simplex.begin() + 1);
 			direction = (ac ^ ao) ^ ac;
-		}
-		else
-		{
+		} else {
 			return ManageLine(simplex = {a, b}, direction);
 		}
-	}
-	else
-	{
-		if ((ab ^ abc) * ao > 0)
-		{
+	} else {
+		if ((ab ^ abc) * ao > 0) {
 			return ManageLine(simplex = { a, b }, direction);
-		}
-		else
-		{
-			if (abc * ao > 0)
-			{
+		} else {
+			if (abc * ao > 0) {
 				direction = abc;
-			}
-			else
-			{
+			} else {
 				simplex = { a, c, b };
 				direction = -abc;
 			}
@@ -84,8 +66,7 @@ bool ManageTriangle(vector<Vec3>& simplex, Vec3& direction)
 	return false;
 }
 
-bool ManageTetraHedra(vector<Vec3>& simplex, Vec3& direction)
-{
+bool ManageTetraHedra(vector<Vec3>& simplex, Vec3& direction) {
 	Vec3 a = simplex[0];
 	Vec3 b = simplex[1];
 	Vec3 c = simplex[2];
@@ -115,29 +96,24 @@ bool ManageTetraHedra(vector<Vec3>& simplex, Vec3& direction)
 	return true;
 }
 
-bool ManageSimplex(vector<Vec3>& simplex, Vec3& direction)
-{
-	switch (simplex.size())
-	{
-	case 2: return ManageLine(simplex, direction); 
-	case 3: return ManageTriangle(simplex, direction); 
-	case 4: return ManageTetraHedra(simplex, direction); 
-	default: DEBUG_LOGERROR("Simplex Invalid"); return false;
+bool ManageSimplex(vector<Vec3>& simplex, Vec3& direction) {
+	switch (simplex.size()) {
+		case 2: return ManageLine(simplex, direction); 
+		case 3: return ManageTriangle(simplex, direction); 
+		case 4: return ManageTetraHedra(simplex, direction); 
+		default: DEBUG_LOGERROR("Simplex Invalid"); return false;
 	}
 }
 
-CollisionHit Collision::CheckCollision(const Collider& c1, const Collider& c2)
-{
-
-	if (typeid(c1) == typeid(SphereCollider) && typeid(c2) == typeid(SphereCollider))
-	{
+CollisionHit Collision::CheckCollision(const Collider& c1, const Collider& c2) {
+	if (typeid(c1) == typeid(SphereCollider) && typeid(c2) == typeid(SphereCollider)) {
 		//Sphere collision
 		SphereCollider& s1 = (SphereCollider&)c1;
 		SphereCollider& s2 = (SphereCollider&)c2;
 		CollisionHit hit;
 		hit.isColliding = Distance(s1.gameObject->transform.GetGlobalPosition(), s2.gameObject->transform.GetGlobalPosition()) <= s1.radius + s2.radius;
-		if (hit.isColliding)
-		{
+
+		if (hit.isColliding) {
 			hit.resolutionNormal = s2.gameObject->transform.GetGlobalPosition() - s1.gameObject->transform.GetGlobalPosition();
 			hit.resolutionDistance = (s1.radius + s2.radius) - Distance(s1.gameObject->transform.GetGlobalPosition(), s2.gameObject->transform.GetGlobalPosition());
 		}
@@ -154,35 +130,28 @@ CollisionHit Collision::CheckCollision(const Collider& c1, const Collider& c2)
 
 	int n = 0;
 
-	while (n < 50)
-	{
+	while (n < 50) {
 		n++;
-		
-
 		Vec3 a = Support(c1, c2, direction);
 
-		if (a * direction < 0)
-		{
+		if (a * direction < 0) {
 			res = false;
 			break;
 		}
 
 		simplex.insert(simplex.begin(), a);
 
-		if (ManageSimplex(simplex, direction))
-		{
+		if (ManageSimplex(simplex, direction)) {
 			res = true;
 			break;
 		}
 		
 	}
 
-	if (res)
-	{
+	if (res) {
 		return ResolveCollision(c1, c2, simplex);
 	}
-	else
-	{
+	else {
 		CollisionHit hit;
 		hit.isColliding = false;
 		hit.resolutionDistance = 0;
@@ -191,10 +160,7 @@ CollisionHit Collision::CheckCollision(const Collider& c1, const Collider& c2)
 	}
 }
 
-pair<vector<Vec4>, size_t> GetFaceNormals(
-	const vector<Vec3>& polytope,
-	const vector<size_t>& faces)
-{
+pair<vector<Vec4>, size_t> GetFaceNormals(const vector<Vec3>& polytope, const vector<size_t>& faces) {
 	std::vector<Vec4> normals;
 	size_t minTriangle = 0;
 	float  minDistance = FLT_MAX;
@@ -223,12 +189,7 @@ pair<vector<Vec4>, size_t> GetFaceNormals(
 	return { normals, minTriangle };
 }
 
-void AddIfUniqueEdge(
-	std::vector<std::pair<size_t, size_t>>& edges,
-	const std::vector<size_t>& faces,
-	size_t a,
-	size_t b)
-{
+void AddIfUniqueEdge(std::vector<std::pair<size_t, size_t>>& edges, const std::vector<size_t>& faces, size_t a, size_t b) {
 	auto reverse = std::find(
 		edges.begin(),
 		edges.end(),
@@ -244,8 +205,7 @@ void AddIfUniqueEdge(
 	}
 }
 
-CollisionHit Collision::ResolveCollision(const Collider& c1, const Collider& c2, const vector<Vec3> simplex) // Finish and understand
-{
+CollisionHit Collision::ResolveCollision(const Collider& c1, const Collider& c2, const vector<Vec3> simplex) /* Finish and understand*/ {
 	vector<Vec3> polytope(simplex.begin(), simplex.end());
 	vector<size_t>  faces = {
 		0, 1, 2,
@@ -255,8 +215,7 @@ CollisionHit Collision::ResolveCollision(const Collider& c1, const Collider& c2,
 	};
 
 	auto [normals, minFace] = GetFaceNormals(polytope, faces);
-	if (normals.size() <= 0)
-	{
+	if (normals.size() <= 0) {
 		CollisionHit hit;
 
 		hit.resolutionNormal = Vec3();
@@ -265,6 +224,7 @@ CollisionHit Collision::ResolveCollision(const Collider& c1, const Collider& c2,
 
 		return hit;
 	}
+
 	Vec3 minNormal;
 	float   minDistance = FLT_MAX;
 
@@ -278,8 +238,7 @@ CollisionHit Collision::ResolveCollision(const Collider& c1, const Collider& c2,
 		float test = abs(sDistance - minDistance);
 
 		n++;
-		if (n > 50)
-		{
+		if (n > 50) {
 			CollisionHit hit;
 
 			hit.resolutionNormal = minNormal;
@@ -312,6 +271,7 @@ CollisionHit Collision::ResolveCollision(const Collider& c1, const Collider& c2,
 					i--;
 				}
 			}
+
 			std::vector<size_t> newFaces;
 			for (auto [edgeIndex1, edgeIndex2] : uniqueEdges) {
 				newFaces.push_back(edgeIndex1);
@@ -322,8 +282,7 @@ CollisionHit Collision::ResolveCollision(const Collider& c1, const Collider& c2,
 			polytope.push_back(support);
 
 			auto [newNormals, newMinFace] = GetFaceNormals(polytope, newFaces);
-			if (normals.size() <= 0)
-			{
+			if (normals.size() <= 0) {
 				CollisionHit hit;
 
 				hit.resolutionNormal = Vec3();
@@ -350,6 +309,7 @@ CollisionHit Collision::ResolveCollision(const Collider& c1, const Collider& c2,
 		}
 		
 	}
+
 	CollisionHit hit;
 
 	hit.resolutionNormal = minNormal;
@@ -359,27 +319,16 @@ CollisionHit Collision::ResolveCollision(const Collider& c1, const Collider& c2,
 	return hit;
 }
 
-
-
-
-
-
-void Collision::UpdateCollision()
-{
-	for (RigidBody* rb : rigidBodies)
-	{
+void Collision::UpdateCollision() {
+	for (RigidBody* rb : rigidBodies) {
 		rb->isGrounded = false;
 	}
 
 
-	for (unsigned int i = 0; i < colliders.size(); i++)
-	{
+	for (unsigned int i = 0; i < colliders.size(); i++) {
 		colliders[i]->Render();
-		for (unsigned int j = i + 1; j < colliders.size(); j++)
-		{
-			
-			if (!colliders[i]->rigidBody && !colliders[j]->rigidBody)
-			{
+		for (unsigned int j = i + 1; j < colliders.size(); j++) {
+			if (!colliders[i]->rigidBody && !colliders[j]->rigidBody) {
 				continue;
 			}
 
@@ -390,27 +339,21 @@ void Collision::UpdateCollision()
 			colliders[j]->gameObject->transform.position += offsetJ;
 
 			CollisionHit hit = CheckCollision(*colliders[i], *colliders[j]);
-			if (hit.isColliding)
-			{
-				if (colliders[i]->rigidBody)
-				{
-					if (colliders[j]->rigidBody)
-					{
+			if (hit.isColliding) {
+				if (colliders[i]->rigidBody) {
+					if (colliders[j]->rigidBody) {
 						colliders[i]->rigidBody->velocity -= (hit.resolutionNormal * hit.resolutionDistance * 0.5f) / Time::deltaTime;
 						colliders[j]->rigidBody->velocity += (hit.resolutionNormal * hit.resolutionDistance * 0.5f) / Time::deltaTime;
 
 						if (hit.resolutionNormal.y > 0.05f)
 							colliders[j]->rigidBody->isGrounded = true;
-					}
-					else
-					{
+					} else {
 						colliders[i]->rigidBody->velocity -= (hit.resolutionNormal * hit.resolutionDistance) / Time::deltaTime;
 					}
+
 					if (hit.resolutionNormal.y < -0.05f)
 						colliders[i]->rigidBody->isGrounded = true;
-				}
-				else
-				{
+				} else {
 					colliders[j]->rigidBody->velocity += (hit.resolutionNormal * hit.resolutionDistance) / Time::deltaTime;
 					if (hit.resolutionNormal.y > 0.05f)
 						colliders[j]->rigidBody->isGrounded = true;
@@ -421,8 +364,7 @@ void Collision::UpdateCollision()
 		}
 	}
 
-	for (RigidBody* rb : rigidBodies)
-	{
+	for (RigidBody* rb : rigidBodies) {
 		rb->gameObject->transform.position += rb->velocity * Time::deltaTime;
 	}
 }

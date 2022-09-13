@@ -13,8 +13,7 @@ using namespace Core::DataStructure;
 
 Vec4 Light::ambientColor;
 
-Light::Light(int _type)
-{
+Light::Light(int _type) {
 	type = (LightType)_type;
 
 	MonoBehaviour();
@@ -30,13 +29,11 @@ Light::Light(int _type)
 	intensity = 1;
 }
 
-void Light::Start()
-{
+void Light::Start() {
 	Renderer::lights.push_back(this);
 }
 
-void Light::Render(int i)
-{
+void Light::Render(int i) {
 	Vec3 lightGlobalPos = gameObject->transform.GetGlobalPosition();
 	std::string prefix = "lights[" + std::to_string(i) + "].";
 
@@ -44,71 +41,61 @@ void Light::Render(int i)
 
 	Vec4 direction = gameObject->transform.GetModel() * Vec4(0, -1, 0, 0);
 
-	switch (type)
-	{
-	case (LightType::L_DIRECTIONAL):
-		glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "direction").c_str()), 1, &direction.x);
-		break;
+	switch (type) {
+		case (LightType::L_DIRECTIONAL):
+			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "direction").c_str()), 1, &direction.x);
+			break;
 	
-	case (LightType::L_POINT):
-		glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "position").c_str()), 1, &lightGlobalPos.x);
-		glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "constantAttenuation").c_str()), constantAttenuation);
-		glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "linearAttenuation").c_str()), linearAttenuation);
-		glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "quadraticAttenuation").c_str()), quadraticAttenuation);
-		break;
+		case (LightType::L_POINT):
+			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "position").c_str()), 1, &lightGlobalPos.x);
+			glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "constantAttenuation").c_str()), constantAttenuation);
+			glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "linearAttenuation").c_str()), linearAttenuation);
+			glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "quadraticAttenuation").c_str()), quadraticAttenuation);
+			break;
 
-	case (LightType::L_SPOT):
-		glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "position").c_str()), 1, &lightGlobalPos.x);
-		glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "direction").c_str()), 1, &direction.x);
-		glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "spotCutoff").c_str()), cosf(spotCutoff * (mPI / 180)));
+		case (LightType::L_SPOT):
+			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "position").c_str()), 1, &lightGlobalPos.x);
+			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "direction").c_str()), 1, &direction.x);
+			glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "spotCutoff").c_str()), cosf(spotCutoff * (mPI / 180)));
 	}
 
 	glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "color").c_str()), 1, &color.x);
 	glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "intensity").c_str()), intensity);
 
-
 	glUniform4fv(glGetUniformLocation(Renderer::shaderProgram, "ambientColor"), 1, &ambientColor.x);
 }
 
-void Light::DisplayGUI()
-{
-	if (ImGui::CollapsingHeader("Light"))
-	{
+void Light::DisplayGUI() {
+	if (ImGui::CollapsingHeader("Light")) {
 		ImGui::ColorEdit4("Ambient Color", &ambientColor.x);
 		ImGui::ColorEdit3("Diffuse Color", &color.x);
 		ImGui::DragFloat("Intensity", &intensity, 0.01f, 0, 3);
-
 
 		const char* lightType = "Directional\0Point\0Spot";
 		int t = (int)type;
 		ImGui::Combo("Light Type", &t, lightType);
 		type = (LightType)t;
 
-		switch (type)
-		{
-		case (LightType::L_DIRECTIONAL):
-			break;
+		switch (type) {
+			case (LightType::L_DIRECTIONAL):
+				break;
 
-		case (LightType::L_POINT):
-			ImGui::DragFloat("Constant Attenuation", &constantAttenuation, 0.01f, 0, 2);
-			ImGui::DragFloat("Linear Attenuation", &linearAttenuation, 0.01f, 0, 5);
-			ImGui::DragFloat("Quadratic Attenuation", &quadraticAttenuation, 0.01f, 0, 5);
-			break;
+			case (LightType::L_POINT):
+				ImGui::DragFloat("Constant Attenuation", &constantAttenuation, 0.01f, 0, 2);
+				ImGui::DragFloat("Linear Attenuation", &linearAttenuation, 0.01f, 0, 5);
+				ImGui::DragFloat("Quadratic Attenuation", &quadraticAttenuation, 0.01f, 0, 5);
+				break;
 
-		case (LightType::L_SPOT):
-			ImGui::DragFloat("Spot Cutoff", &spotCutoff, 0.05f, 0, 180);
-			break;
+			case (LightType::L_SPOT):
+				ImGui::DragFloat("Spot Cutoff", &spotCutoff, 0.05f, 0, 180);
+				break;
 		}
-
-		
 	}
 }
 
-void Light::Update()
-{
+void Light::Update() {
 }
 
-void Light::Destroy()
-{
+void Light::Destroy() {
 	Renderer::lights.erase(std::remove(Renderer::lights.begin(), Renderer::lights.end(), this), Renderer::lights.end());
 }

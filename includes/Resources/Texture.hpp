@@ -1,10 +1,10 @@
 #pragma once
-#include "Resource.hpp"
+
 #include <string>
 
+#include "Resource.hpp"
 #include <GLAD/includes/glad.h>
 #include <GLFW/includes/glfw3.h>
-
 
 namespace Resources
 {

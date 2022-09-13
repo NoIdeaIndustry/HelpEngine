@@ -1,16 +1,15 @@
 #pragma once
+
 #include "ResourceManager.hpp"
 #include "Resource.hpp"
 #include "Texture.hpp"
 #include "Math.hpp"
 
-
 namespace Resources
 {
 	class Material : public Resource
 	{
-	public :
-
+	public:
 		Material(Texture* tex, Core::myMath::Vec3 color, float shiny);
 		void Unload() override;
 

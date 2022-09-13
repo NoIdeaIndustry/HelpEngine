@@ -1,32 +1,27 @@
 #pragma once
+
 #include "GLAD/includes/glad.h"
 #include <GLFW/includes/glfw3.h>
 
 namespace Core
 {
-	
-
-	struct AppInitializer
-	{
-		int width, height;
-		int major, minor;
-		char* name;
-		void (*framebuffer_size_callback)(GLFWwindow* window, int width, int height);
-		void (*glDebugOutput)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
+	struct AppInitializer {
+		unsigned int APP_WIDTH, APP_HEIGHT;
+		unsigned int APP_MAJOR, APP_MINOR;
+		const char* APP_NAME;
 	};
 
 	class App
 	{
 		static void processInput(GLFWwindow* window);
 
-	public :
+	public:
+		inline static AppInitializer p_AppSettings;
+
 		static GLFWwindow* window;
-		inline static int height, width;
 		
-		void Init(AppInitializer initializer);
+		void Init();
 		void Update();
-		
 	};
-	
 
 }

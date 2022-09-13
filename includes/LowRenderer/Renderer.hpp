@@ -1,4 +1,5 @@
 #pragma once
+
 #include "LowRenderer/Camera.hpp"
 #include "Mesh.hpp"
 #include "Light.hpp"
@@ -9,7 +10,7 @@ namespace LowRenderer
 {
 	class Renderer
 	{
-	public :
+	public:
 		static Camera* mainCamera;
 		static std::vector<Light*> lights;
 		static std::vector<Mesh*> meshList;
@@ -18,6 +19,7 @@ namespace LowRenderer
 		static void Update(); 
 		static Core::myMath::mat4x4 modelViewMatrix;
 
-	private :
+	private:
+
 	};
 }

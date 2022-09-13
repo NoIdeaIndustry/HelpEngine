@@ -1,24 +1,23 @@
-#include "Resources/Model.hpp"
 #include <fstream>
-#include "Utils/Debug.hpp"
+
 #include <GLAD/includes/glad.h>
 #include <GLFW/includes/glfw3.h>
+
+#include "Resources/Model.hpp"
+#include "Utils/Debug.hpp"
 
 using namespace Resources;
 using namespace std;
 using namespace Core::myMath;
  
-
-Model::Model()
-{
+Model::Model() {
 	type = Resource::ResourceType::R_MODEL;
 	Resource();
 }
 
 
 
-void Model::Unload()
-{
+void Model::Unload() {
 	//cout << "Clearing model" << endl;
 	positions.clear();
 	normals.clear();
@@ -30,20 +29,20 @@ void Model::Unload()
 	this->~Model();
 }
 
-void Model::Load(const std::string& filepath)
-{
+void Model::Load(const std::string& filepath) {
 	fstream file;
 	file.open(filepath.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
 
-	if (!file)
+	if (!file) {
 		DEBUG_LOGERROR("Error opening file " + filepath);
+	}
 
 	vector<string> lines;
 	string currentLine;
-	for (currentLine; getline(file, currentLine);)
-	{
+	for (currentLine; getline(file, currentLine);) {
 		lines.push_back(currentLine);
 	}
+
 	file.close();
 	
 	positions.push_back(Vec3());
@@ -51,28 +50,23 @@ void Model::Load(const std::string& filepath)
 	UVs.push_back(Vec2());
 	
 	// parse file one line at a time
-	for (string line : lines)
-	{
-		switch (line[0])
-		{
-		case 'v': ParseVertex(line); break;
-		case 'f': ParseIndex(line); break;
-		default: break;// DEBUG_LOGERROR("OBJ FILE ERROR.");
+	for (string line : lines) {
+		switch (line[0]) {
+			case 'v': ParseVertex(line); break;
+			case 'f': ParseIndex(line); break;
+			default: break;// DEBUG_LOGERROR("OBJ FILE ERROR.");
 		}
 	}
 
 	BindData();
-
 }
 
-void Model::BindData()
-{
+void Model::BindData() {
 	float* vertices = new float[(triangles.size() / 3) * 8];
 	int* indices = new int[triangles.size() / 3];
 
 	// Set up vertices array
-	for (int i = 0; i < triangles.size() / 3; i++)
-	{
+	for (int i = 0; i < triangles.size() / 3; i++) {
 		vertices[i * 8] = positions[triangles[i * 3]].x;
 		vertices[i * 8 + 1] = positions[triangles[i * 3]].y;
 		vertices[i * 8 + 2] = positions[triangles[i * 3]].z;
@@ -115,104 +109,97 @@ void Model::BindData()
 
 	delete[] vertices;
 	delete[] indices;
+
+	bool isLoaded = true;
 }
 
-void Model::ParseVertex(const string& line)
-{
+void Model::ParseVertex(const string& line) {
 	size_t charIndex = 2;
 	size_t sub = 0;
-	switch (line[1])
-	{
-	case ' ': 
-	{
-		Vec3 value;
-		value.x = stof(line.substr(charIndex), &sub);
-		charIndex += sub;
-		value.y = stof(line.substr(charIndex), &sub);
-		charIndex += sub;
-		value.z = stof(line.substr(charIndex), &sub);
-		positions.push_back(value);
-		break;
-	} 
-	case 't':
-	{
-		Vec2 value;
-		value.x = stof(line.substr(charIndex), &sub);
-		charIndex += sub;
-		if (charIndex != line.length() - 2)
-		{
+
+	switch (line[1]) {
+		case ' ':  {
+			Vec3 value;
+			value.x = stof(line.substr(charIndex), &sub);
+			charIndex += sub;
 			value.y = stof(line.substr(charIndex), &sub);
-		}
+			charIndex += sub;
+			value.z = stof(line.substr(charIndex), &sub);
+			positions.push_back(value);
+			break;
+		} 
+		case 't': {
+			Vec2 value;
+			value.x = stof(line.substr(charIndex), &sub);
+			charIndex += sub;
+			if (charIndex != line.length() - 2)
+			{
+				value.y = stof(line.substr(charIndex), &sub);
+			}
 		
-		UVs.push_back(value);
-		break;
-	}
-	case 'n':  
-	{
-		Vec3 value;
-		value.x = stof(line.substr(charIndex), &sub);
-		charIndex += sub;
-		value.y = stof(line.substr(charIndex), &sub);
-		charIndex += sub;
-		value.z = stof(line.substr(charIndex), &sub);
-		normals.push_back(value);
-		break;
-	}
-	default: DEBUG_LOGERROR("obj invalid");
+			UVs.push_back(value);
+			break;
+		}
+		case 'n': {
+			Vec3 value;
+			value.x = stof(line.substr(charIndex), &sub);
+			charIndex += sub;
+			value.y = stof(line.substr(charIndex), &sub);
+			charIndex += sub;
+			value.z = stof(line.substr(charIndex), &sub);
+			normals.push_back(value);
+			break;
+		}
+
+		default: DEBUG_LOGERROR("obj invalid");
 	}
 }
 
-int Mstoi(string str)
-{
+int Mstoi(string str) {
 	if (str == "")
 		return 0;
 	else
 		return stoi(str);
 }
 
-void Model::ParseIndex(const string& line)
-{
+void Model::ParseIndex(const string& line) {
 	string curr;
 	Vec3 value;
 	enum Dim { X, Y, Z };
 	Dim dim = X;
 
-	for (int i = 2; i < line.length(); i++)
-	{
-		switch(line[i])
-		{
-		case ' ': 
-			if (curr == "")
-				break;
-			switch (dim)
-			{
-			case X: value.x = Mstoi(curr); break;
-			case Y: value.y = Mstoi(curr); break;
-			case Z: value.z = Mstoi(curr); break;
-			}
+	for (int i = 2; i < line.length(); i++) {
+		switch(line[i]) {
+			case ' ': 
+				if (curr == "")
+					break;
+				switch (dim) {
+					case X: value.x = Mstoi(curr); break;
+					case Y: value.y = Mstoi(curr); break;
+					case Z: value.z = Mstoi(curr); break;
+				}
 			
-			triangles.push_back(value.x); 
-			triangles.push_back(value.y);
-			triangles.push_back(value.z);
-			dim = X; 
+				triangles.push_back(value.x); 
+				triangles.push_back(value.y);
+				triangles.push_back(value.z);
+				dim = X; 
+				curr = "";
+				break;
+			case '/': 
+				switch (dim) {
+					case X: value.x = Mstoi(curr); dim = Y; break;
+					case Y: value.y = Mstoi(curr); dim = Z; break;
+				}
 			curr = "";
 			break;
-		case '/': 
-			switch (dim)
-			{
-			case X: value.x = Mstoi(curr); dim = Y; break;
-			case Y: value.y = Mstoi(curr); dim = Z; break;
-			}
-		curr = "";
-		break;
-		default: curr += line[i]; break;
+			default: curr += line[i]; break;
 		}
 	}
-	switch (dim)
-	{
-	case X: value.x = Mstoi(curr); break;
-	case Y: value.y = Mstoi(curr); break;
-	case Z: value.z = Mstoi(curr); break;
+
+	switch (dim) {
+		case X: value.x = Mstoi(curr); break;
+		case Y: value.y = Mstoi(curr); break;
+		case Z: value.z = Mstoi(curr); break;
 	}
 
 	triangles.push_back(value.x); triangles.push_back(value.y); triangles.push_back(value.z); dim = X; curr = ""; 

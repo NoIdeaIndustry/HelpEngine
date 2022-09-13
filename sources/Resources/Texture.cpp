@@ -1,33 +1,29 @@
-#include "Resources/Texture.hpp"
+#include <iostream>
 
 #include <STB_IMAGE/stb_image.h>
-#include <iostream>
 #include <IMGUI/imgui.h>
 #include <IMGUI/imgui_impl_opengl3.h>
 #include <IMGUI/imgui_impl_glfw.h>
+
+#include "Resources/Texture.hpp"
 
 using namespace Resources;
 using namespace std;
 
 GLuint Texture::sampler;
 
-
 Texture::~Texture() {}
 
-Texture::Texture()
-	: texKey(0)
-{
+Texture::Texture() : texKey(0) {
 	type = Resource::ResourceType::R_TEXTURE;
 }
 
-void Texture::Unload()
-{
+void Texture::Unload() {
 	//cout << "Deleting texture" << endl;
 	glDeleteTextures(1, &texKey);
 }
 
-void Texture::Load(const string& filepath)
-{
+void Texture::Load(const string& filepath) {
 	int  nrChannels;
 
 	stbi_set_flip_vertically_on_load(true);
@@ -46,13 +42,11 @@ void Texture::Load(const string& filepath)
 }
 
 
-void Texture::DisplayGUI(int index)
-{
+void Texture::DisplayGUI(int index) {
 	ImGui::Image((ImTextureID)texKey, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
 }
 
-void Texture::InitSampler()
-{
+void Texture::InitSampler() {
 	// create a sampler and parameterize it
 		// ------------------------------------
 	sampler = 0;
@@ -67,17 +61,14 @@ void Texture::InitSampler()
 	glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &max);
 }
 
-GLuint Texture::GetTexKey()
-{
+GLuint Texture::GetTexKey() {
 	return texKey;
 }
 
-int Texture::GetWidth()
-{
+int Texture::GetWidth() {
 	return width;
 }
 
-int Texture::GetHeight()
-{
+int Texture::GetHeight() {
 	return height;
 }

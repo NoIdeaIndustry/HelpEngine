@@ -6,7 +6,7 @@ namespace Core
 {
     namespace myMath
     {
-        const float mPI = 3.141592653589793;
+        const double mPI = 3.141592653589793;
 
         inline double sqrt(double x)
         {
@@ -189,7 +189,7 @@ namespace Core
 
         inline float Distance(const Vec2 & a, const Vec2 & b)
         {
-            return (sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2)));
+            return (float)(sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2)));
         }
 
         inline float BiLerp(const Vec2 & t, const float Q00, const float Q01, const float Q10, const float Q11)
@@ -359,7 +359,7 @@ namespace Core
                 return *this;
             }
 
-            inline float GetMagnitude() const
+            inline double GetMagnitude() const
             {
                 Vec4 a = *this;
                 a.Homogenize();
@@ -379,7 +379,7 @@ namespace Core
                 return Vec3(x, y, z);
             }
 
-            float GetNorm() const
+            double GetNorm() const
             {
                 return sqrt((x * x) + (y * y) + (z * z) + (w * w));
             }
@@ -615,7 +615,7 @@ namespace Core
 
             static mat4x4 ViewFPS(const Vec3& pos, const float pitch, const float yaw)
             {
-                float p = pitch * mPI / 180.f;
+                double p = pitch * mPI / 180.f;
                 float y = yaw * mPI / 180.f;
                 float cosPitch = cos(p);     
                 float sinPitch = sin(p);

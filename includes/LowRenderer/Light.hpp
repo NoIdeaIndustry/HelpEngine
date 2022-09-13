@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Math.hpp"
 #include "Core/Scene.hpp"
 
@@ -6,10 +7,8 @@ namespace LowRenderer
 {
 	class Light : public Core::DataStructure::MonoBehaviour
 	{
-	public :
-
-		enum class LightType : int
-		{
+	public:
+		enum class LightType : int {
 			L_DIRECTIONAL = 0,
 			L_POINT = 1,
 			L_SPOT = 2
@@ -31,6 +30,5 @@ namespace LowRenderer
 		static Core::myMath::Vec4 ambientColor;
 		Core::myMath::Vec3 color;
 		float intensity;
-
 	};
 }

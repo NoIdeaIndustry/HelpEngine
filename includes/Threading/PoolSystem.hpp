@@ -1,14 +1,15 @@
 #pragma once
 
+#define LOGGER "[Pool System] "
+
 #include <vector>
-#include "Thread.hpp"
 #include <iostream>
-#include "Utils/Colors.hpp"
+#include "Thread.hpp"
 #include <queue>
-#include "Threading/AtomicMutex.hpp"
 #include <condition_variable>
 
-#define LOGGER "[Pool System] "
+#include "Utils/Colors.hpp"
+#include "Threading/AtomicMutex.hpp"
 
 namespace NThread {
 	typedef std::function<void()> Task;

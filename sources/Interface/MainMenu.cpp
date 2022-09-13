@@ -2,21 +2,18 @@
 
 using namespace Resources;
 
-void MainMenu::Update()
-{
-	if (isPressedPlay)
-	{
+void MainMenu::Update() {
+	if (isPressedPlay) {
 		ResourceManager::DisplayGUI();
 		scene.Update();
 	}
-	if (isPressedOptions)
-	{
+
+	if (isPressedOptions) {
 		DisplayGUIOptions();
 	}
 }
 
-void MainMenu::DisplayGUI(GLFWwindow* _window)
-{
+void MainMenu::DisplayGUI(GLFWwindow* _window) {
 	ImGui::Begin(" ");
 	ImGui::SetWindowPos(ImVec2(700, 300), 0);
 	ImGui::SetWindowSize(ImVec2(800, 600), 0);
@@ -25,41 +22,36 @@ void MainMenu::DisplayGUI(GLFWwindow* _window)
 	ImGui::Indent(200);
 	TextCentered("Main Menu");
 
-	if (ImGui::Button("Play", ImVec2(100,100)))
-	{
+	if (ImGui::Button("Play", ImVec2(100,100))) {
 		isPressedPlay = true;
-		if (firstTime)
-		{
+		if (firstTime) {
 			scene.Start();
 		}
 		firstTime = false;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Restart", ImVec2(100, 100)))
-	{
+
+	if (ImGui::Button("Restart", ImVec2(100, 100))) {
 		isPressedPlay = true;
 		scene.Destroy();
 		scene.Start();
 		firstTime = false;
 	}
+
 	ImGui::SameLine();
-	if (ImGui::Button("Options", ImVec2(100, 100)))
-	{
+	if (ImGui::Button("Options", ImVec2(100, 100))) {
 		isPressedOptions = true;
 	}
+
 	ImGui::SameLine();
-	if (ImGui::Button("Quit", ImVec2(100, 100)))
-	{
+	if (ImGui::Button("Quit", ImVec2(100, 100))) {
 		glfwSetWindowShouldClose(_window, true);
 	}
-
-	
 
 	ImGui::End();
 }
 
-void MainMenu::DisplayGUIOptions()
-{
+void MainMenu::DisplayGUIOptions() {
 	ImGui::Begin(" ");
 	ImGui::SetWindowPos(ImVec2(700, 300), 0);
 	ImGui::SetWindowSize(ImVec2(800, 600), 0);
@@ -67,63 +59,59 @@ void MainMenu::DisplayGUIOptions()
 	ImGui::Dummy(ImVec2(250, 250));
 	ImGui::Indent(250);
 	TextCentered("Options");
-	if (ImGui::Button("Forward", ImVec2(120, 30)))
-	{
+
+	if (ImGui::Button("Forward", ImVec2(120, 30))) {
 		isWaitingToSelect = true;
 		isNewKeyForward = true;
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyForward));
-	if (ImGui::Button("Left", ImVec2(120, 30)))
-	{
+
+	if (ImGui::Button("Left", ImVec2(120, 30))){
 		isWaitingToSelect = true;
 		isNewKeyLeft = true;
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyLeft));
-	if (ImGui::Button("Right", ImVec2(120, 30)))
-	{
+
+	if (ImGui::Button("Right", ImVec2(120, 30))) {
 		isWaitingToSelect = true;
 		isNewKeyRight = true;
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyRight));
-	if (ImGui::Button("Backward", ImVec2(120, 30)))
-	{
+
+	if (ImGui::Button("Backward", ImVec2(120, 30))) {
 		isWaitingToSelect = true;
 		isNewKeyBackward = true;
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyBackward));
-	if (ImGui::Button("Jump", ImVec2(120, 30)))
-	{
+
+	if (ImGui::Button("Jump", ImVec2(120, 30))) {
 		isWaitingToSelect = true;
 		isNewKeyJump = true;
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyJump));
-	if (isWaitingToSelect && Input::IsAnyKeyDown())
-	{
-		if (isNewKeyForward)
-		{
+
+	if (isWaitingToSelect && Input::IsAnyKeyDown()) {
+		if (isNewKeyForward) {
 			Input::newKeyForward = Input::GetLastKeyPressed();
 		}
-		if (isNewKeyLeft)
-		{
+		if (isNewKeyLeft) {
 			Input::newKeyLeft = Input::GetLastKeyPressed();
 		}
-		if (isNewKeyRight)
-		{
+		if (isNewKeyRight) {
 			Input::newKeyRight = Input::GetLastKeyPressed();
 		}
-		if (isNewKeyBackward)
-		{
+		if (isNewKeyBackward) {
 			Input::newKeyBackward = Input::GetLastKeyPressed();
 		}
-		if (isNewKeyJump)
-		{
+		if (isNewKeyJump) {
 			Input::newKeyJump = Input::GetLastKeyPressed();
 		}
+
 		isWaitingToSelect = false;
 		isNewKeyForward = false;
 		isNewKeyLeft = false;
@@ -132,21 +120,17 @@ void MainMenu::DisplayGUIOptions()
 		isNewKeyJump = false;
 	}
 	ImGui::Text("Press ESC to go back");
-	
 	ImGui::End();
 }
 
-void MainMenu::ReturnMainMenu(GLFWwindow* _window)
-{
-	if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	{
+void MainMenu::ReturnMainMenu(GLFWwindow* _window) {
+	if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		isPressedPlay = false;
 		isPressedOptions = false;
 	}
 }
 
-void MainMenu::TextCentered(std::string text)
-{
+void MainMenu::TextCentered(std::string text) {
 	float win_width = ImGui::GetWindowSize().x;
 	float text_width = ImGui::CalcTextSize(text.c_str()).x;
 

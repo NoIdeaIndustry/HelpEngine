@@ -7,7 +7,6 @@
 class Input
 {
 public :
-	
 	inline static int newKeyForward = GLFW_KEY_W;
 	inline static int newKeyLeft = GLFW_KEY_A;
 	inline static int newKeyRight = GLFW_KEY_D;

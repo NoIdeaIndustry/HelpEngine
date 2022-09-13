@@ -1,25 +1,23 @@
 #pragma once
-#include "Math.hpp"
-#include "Core/Scene.hpp"
+
 #include <vector>
-#include "RigidBody.hpp"
 #include <unordered_map>
 
+#include "Math.hpp"
+#include "Core/Scene.hpp"
+#include "RigidBody.hpp"
 
 namespace Physics
 {
-
-	struct CollisionHit
-	{
+	struct CollisionHit {
 		Core::myMath::Vec3 resolutionNormal;
 		float resolutionDistance;
 		bool isColliding;
 	};
 
-
 	class Collider :  public Core::DataStructure::MonoBehaviour
 	{
-	public :
+	public:
 		virtual Core::myMath::Vec3 FindFurthestPoint(const Core::myMath::Vec3& direction) const = 0;
 		virtual void Render() const = 0;
 
@@ -30,7 +28,7 @@ namespace Physics
 
 	class SphereCollider :  public Collider
 	{
-	public :
+	public:
 		SphereCollider(float _radius = 1);
 
 		Core::myMath::Vec3 FindFurthestPoint(const Core::myMath::Vec3& direction) const override;
@@ -46,7 +44,7 @@ namespace Physics
 
 	class CubeCollider : public Collider
 	{
-	public :
+	public:
 		Core::myMath::Vec3 FindFurthestPoint(const Core::myMath::Vec3& direction) const override;
 		void Render() const override;
 
@@ -55,15 +53,14 @@ namespace Physics
 		void Destroy() override;
 		void DisplayGUI() override;
 
-	private :
+	private:
 		std::vector<Core::myMath::Vec3> vertices;
 		Core::myMath::Vec3 size;
 	};
 
-
 	static class Collision
 	{
-	public :
+	public:
 		static inline std::vector<Collider*> colliders;
 		static inline std::vector<RigidBody*> rigidBodies;
 
@@ -72,6 +69,5 @@ namespace Physics
 
 		static void UpdateCollision();
 	};
-
 }
 

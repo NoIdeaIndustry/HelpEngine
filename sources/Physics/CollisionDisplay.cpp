@@ -5,20 +5,17 @@ using namespace CollisionDisplay;
 using namespace Core::myMath;
 using namespace Resources;
 
-void CollisionMesh::InitSphereMesh()
-{
+void CollisionMesh::InitSphereMesh() {
     Model model;
     int triSize = 0;
     model.UVs.push_back(Vec2());
     model.normals.push_back(Vec3());
     model.positions.push_back(Vec3());
-    for (int j = 0; j < 12; ++j)
-    {
+    for (int j = 0; j < 12; ++j) {
         float theta0 = ((j + 0) / 12.f) * mPI;
         float theta1 = ((j + 1) / 12.f) * mPI;
 
-        for (int i = 0; i < 12; ++i)
-        {
+        for (int i = 0; i < 12; ++i) {
             float phi0 = ((i + 0) / 12.f) * 2.f * mPI;
             float phi1 = ((i + 1) / 12.f) * 2.f * mPI;
 
@@ -52,13 +49,13 @@ void CollisionMesh::InitSphereMesh()
             triSize += 4;
         }
     }
+
     model.BindData();
     Sphere = model;
 
 }
 
-void CollisionMesh::InitCubeMesh()
-{
+void CollisionMesh::InitCubeMesh() {
     Model model;
     model.positions.push_back(Vec3());
     model.positions.push_back(Vec3(1, -1, -1));
@@ -123,10 +120,6 @@ void CollisionMesh::InitCubeMesh()
     model.triangles.push_back(1); model.triangles.push_back(0); model.triangles.push_back(0);
     model.triangles.push_back(8); model.triangles.push_back(0); model.triangles.push_back(0);
 
-
-
-
     model.BindData();
     Cube = model;
-
 }

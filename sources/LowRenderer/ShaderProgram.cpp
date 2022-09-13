@@ -5,8 +5,7 @@
 
 using namespace Resources;
 
-ShaderProgram::ShaderProgram(int vertexShader, int fragmentShader)
-{
+ShaderProgram::ShaderProgram(int vertexShader, int fragmentShader) {
 	type = Resource::ResourceType::R_SHADERPROGRAM;
 	int success;
 	char infoLog[255];
@@ -25,13 +24,11 @@ ShaderProgram::ShaderProgram(int vertexShader, int fragmentShader)
 	glDeleteShader(fragmentShader);
 }
 
-int ShaderProgram::GetProgram()
-{
+int ShaderProgram::GetProgram() {
 	return program;
 }
 
-void ShaderProgram::Unload()
-{
+void ShaderProgram::Unload() {
 	glDeleteProgram(program);
 }
 
