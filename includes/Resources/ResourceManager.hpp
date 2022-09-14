@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <queue>
-
+#include <Threading/PoolSystem.hpp>
 #include <Resources/Resource.hpp>
 
 namespace Resources
@@ -26,6 +26,8 @@ namespace Resources
 	private :
 		static std::unordered_map<std::string, Resource*> resourceMap;
 		static std::queue<Resource*> needToBeBinded;
+		inline static NThread::Pool pool;
+		inline static bool allResourcesareLoaded;
 	};
 }
 

@@ -49,8 +49,7 @@ void CollisionMesh::InitSphereMesh() {
             triSize += 4;
         }
     }
-
-    model.BindData();
+    model.Bind();
     Sphere = model;
 
 }
@@ -120,6 +119,9 @@ void CollisionMesh::InitCubeMesh() {
     model.triangles.push_back(1); model.triangles.push_back(0); model.triangles.push_back(0);
     model.triangles.push_back(8); model.triangles.push_back(0); model.triangles.push_back(0);
 
-    model.BindData();
+
+
+
+    model.Bind();
     Cube = model;
 }

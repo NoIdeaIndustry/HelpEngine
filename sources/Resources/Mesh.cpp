@@ -15,56 +15,61 @@ using namespace Resources;
 using namespace std;
 using namespace Core::DataStructure;
 
-Mesh::Mesh(Model* _model, int _shader) {
-	model = _model;
-	shaderProgram = _shader;
-	MonoBehaviour();
-}
 
-Mesh::Mesh(Model* _model, int _shader, Material* _mat) {
+
+Mesh::Mesh(Model* _model, ShaderProgram* _shaderProgram, Material* _mat) 
+{
 	model = _model;
 	material = _mat;
-	shaderProgram = _shader;
+	shaderProgram = _shaderProgram;
 	MonoBehaviour();
 }
 
-void Mesh::Start() {
+
+void Mesh::Start() 
+{
 	Renderer::meshList.push_back(this);
-	Renderer::shaderProgram = shaderProgram;
+	//Renderer::shaderProgram = shaderProgram;
 }
 
-void Mesh::Update() {
+void Mesh::Update()
+{
 }
 
-void Mesh::Render() {
+void Mesh::Render() 
+{
 	modelMatrix = gameObject->transform.GetModel();
 	mat4x4 mvp = modelMatrix * Renderer::modelViewMatrix;
 
-	if (material) {
-		if (material->albedoTexture) {
+	if (material && material->isLoaded)
+	{
+		if (material->albedoTexture && material->albedoTexture->isLoaded)
+		{
+			
 			GLuint unit = 0;
 			glActiveTexture(GL_TEXTURE0 + unit);
 			glBindTexture(GL_TEXTURE_2D, material->albedoTexture->GetTexKey());
-			glUniform1i(glGetUniformLocation(shaderProgram, "material.albedoTexture"), unit);
+			glUniform1i(glGetUniformLocation(shaderProgram->GetProgram(), "material.albedoTexture"), unit);
 
-			glUniform1i(glGetUniformLocation(shaderProgram, "material.useTexture"), true);
+			glUniform1i(glGetUniformLocation(shaderProgram->GetProgram(), "material.useTexture"), true);
 		} else {
-			glUniform1i(glGetUniformLocation(shaderProgram, "material.useTexture"), false);
+			glUniform1i(glGetUniformLocation(shaderProgram->GetProgram(), "material.useTexture"), false);
 		}
-		glUniform3fv(glGetUniformLocation(shaderProgram, "material.albedoColor"), 1, &material->albedoColor.x);
-		glUniform1f(glGetUniformLocation(shaderProgram, "material.shininess"), material->shininess);
-		glUniform3fv(glGetUniformLocation(shaderProgram, "material.specularColor"), 1, &material->specularColor.x);
+		glUniform3fv(glGetUniformLocation(shaderProgram->GetProgram(), "material.albedoColor"), 1, &material->albedoColor.x);
+		glUniform1f(glGetUniformLocation(shaderProgram->GetProgram(), "material.shininess"), material->shininess);
+		glUniform3fv(glGetUniformLocation(shaderProgram->GetProgram(), "material.specularColor"), 1, &material->specularColor.x);
 	} else {
-		glUniform1i(glGetUniformLocation(shaderProgram, "material.useTexture"), false);
-		glUniform3f(glGetUniformLocation(shaderProgram, "material.albedoColor"), 1, 1, 1);
-		glUniform3f(glGetUniformLocation(shaderProgram, "material.specularColor"), 0.8f, 0.8f, 0.8f);
-		glUniform1f(glGetUniformLocation(shaderProgram, "material.shininess"), 32);
+		glUniform1i(glGetUniformLocation(shaderProgram->GetProgram(), "material.useTexture"), false);
+		glUniform3f(glGetUniformLocation(shaderProgram->GetProgram(), "material.albedoColor"), 1, 1, 1);
+		glUniform3f(glGetUniformLocation(shaderProgram->GetProgram(), "material.specularColor"), 0.8f, 0.8f, 0.8f);
+		glUniform1f(glGetUniformLocation(shaderProgram->GetProgram(), "material.shininess"), 32);
 	}
 
-	if (model) {
+	if (model && model->isLoaded)
+	{
 		glBindVertexArray(model->VAO);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "mvp"), 1, GL_TRUE, &mvp.value[0][0]);
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_TRUE, &modelMatrix.value[0][0]);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram->GetProgram(), "mvp"), 1, GL_TRUE, &mvp.value[0][0]);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram->GetProgram(), "model"), 1, GL_TRUE, &modelMatrix.value[0][0]);
 		glDrawElements(GL_TRIANGLES, model->indexCount, GL_UNSIGNED_INT, 0);
 	}
 }

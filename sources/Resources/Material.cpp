@@ -13,6 +13,7 @@ Material::Material(Texture* tex, Vec3 color, float shiny) {
 	shininess = shiny;
 	specularColor = Vec3(0.8f, 0.8f, 0.8f);
 	type = Resource::ResourceType::R_MATERIAL;
+	isLoaded = true;
 }
 
 void Material::Unload() {
@@ -34,7 +35,6 @@ void Material::DisplayGUI(int index) {
 		}
 		ImGui::EndDragDropTarget();
 	}
-
-	if(albedoTexture)
+	if(albedoTexture && albedoTexture->isLoaded)
 		ImGui::Image((ImTextureID)albedoTexture->GetTexKey(), ImVec2(80, 80), ImVec2(0, 1), ImVec2(1, 0), ImVec4(albedoColor.x, albedoColor.y, albedoColor.z, 1));
 }

@@ -1,4 +1,4 @@
-#include "LowRenderer/Camera.hpp"
+   #include "LowRenderer/Camera.hpp"
 #include <IMGUI/imgui.h>
 #include <IMGUI/imgui_impl_opengl3.h>
 #include <IMGUI/imgui_impl_glfw.h>
@@ -20,7 +20,8 @@ Camera::Camera() {
 
 void Camera::Start() {
 	Renderer::mainCamera = this;
-	Renderer::shaderProgram = ((Resources::ShaderProgram*)Resources::ResourceManager::Get("ShaderProgram"))->GetProgram();
+	
+	Renderer::shaderProgram = ((Resources::ShaderProgram*)Resources::ResourceManager::Get("ShaderProgram"));
 }
 
 void Camera::Update() {
@@ -36,7 +37,7 @@ void Camera::UpdateViewProjection() {
 	int width, height;
 	glfwGetWindowSize(Core::App::window, &width, &height);
 	Renderer::modelViewMatrix = mat4x4::Inverse(gameObject->transform.GetModel()) * mat4x4::Perspective(fov, 0.01f, 400, (float)height / (float)width);
-	glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, "viewPos"), 1, &gameObject->transform.position.x);
+	glUniform3fv(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), "viewPos"), 1, &gameObject->transform.position.x);
 }
 
 void Camera::ManageInput() {

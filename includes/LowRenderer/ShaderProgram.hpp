@@ -11,12 +11,16 @@ namespace Resources
 	class ShaderProgram : public Resource
 	{
 	public:
-		ShaderProgram(int vertexShader, int fragmentShader);
+		ShaderProgram(Shader* vertexShader, Shader* fragmentShader);
+
+		void Bind() override;
 		void Unload();
 		~ShaderProgram();
 		int GetProgram();
 
 	private:
 		int program;
+
+		Shader* fragmentShader, *vertexShader;
 	};
 }

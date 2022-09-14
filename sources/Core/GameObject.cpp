@@ -80,7 +80,7 @@ void GameObject::DisplayGUI() {
 
 		if (ImGui::Selectable("Camera")) { AddComponent(new LowRenderer::Camera()); }
 		if (ImGui::Selectable("Light")) { AddComponent(new LowRenderer::Light(0)); }
-		if (ImGui::Selectable("Mesh")) { AddComponent(new LowRenderer::Mesh(((Model*)ResourceManager::Get("Cube")),((ShaderProgram*)ResourceManager::Get("ShaderProgram"))->GetProgram() )); }
+		if (ImGui::Selectable("Mesh")) { AddComponent(new LowRenderer::Mesh(((Model*)ResourceManager::Get("Cube")),((ShaderProgram*)ResourceManager::Get("ShaderProgram")) )); }
 
 		ImGui::Separator();
 

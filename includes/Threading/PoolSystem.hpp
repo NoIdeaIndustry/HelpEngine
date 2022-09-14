@@ -7,12 +7,17 @@
 #include "Thread.hpp"
 #include <queue>
 #include <condition_variable>
-
+#include "Resources/Resource.hpp"
 #include "Utils/Colors.hpp"
 #include "Threading/AtomicMutex.hpp"
 
 namespace NThread {
-	typedef std::function<void()> Task;
+	
+	struct ResourceTask
+	{
+		std::function<void(Resources::Resource*)> task;
+		Resources::Resource* arg;
+	};
 
 	class Pool
 	{
@@ -45,7 +50,7 @@ namespace NThread {
 			return shouldThreadsStops;
 		}
 
-		void registerTask(Task task) {
+		void registerTask(ResourceTask task) {
 			taskMtx.lock();
 			tasks.push(task);
 			taskMtx.unlock();
@@ -53,34 +58,21 @@ namespace NThread {
 			tasks_cond.notify_one();
 		}
 
-		Task queryTask(Thread* t, std::string pName) {
-			queryMtx.lock();
+		ResourceTask queryResourceTask(std::string pName) {
 
-			t->setWorking(false);
-
-			while (tasks.empty()) {
-				if (!t->getWorking()) {
-					t->setWorking(false);
-				}
-				// continue
-			}
-
-			t->setWorking(true);
-
-			Task task = tasks.front();
+			ResourceTask task = tasks.front();
 			tasks.pop();
-			queryMtx.unlock();
 			return task;
 		}
 
 		bool isRegistering = true;
-	private:
 		AtomicMutex queryMtx;
+		std::queue<ResourceTask> tasks;
+	private:
 		AtomicMutex taskMtx;
 
 		std::atomic_bool shouldThreadsStops{ false };
 		std::vector<Thread*> pool;
-		std::queue<Task> tasks;
 
 		std::condition_variable tasks_cond;
 	};

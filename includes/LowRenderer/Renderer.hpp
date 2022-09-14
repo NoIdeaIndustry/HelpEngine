@@ -14,7 +14,7 @@ namespace LowRenderer
 		static Camera* mainCamera;
 		static std::vector<Light*> lights;
 		static std::vector<Mesh*> meshList;
-		static int shaderProgram;
+		static Resources::ShaderProgram* shaderProgram;
 
 		static void Update(); 
 		static Core::myMath::mat4x4 modelViewMatrix;

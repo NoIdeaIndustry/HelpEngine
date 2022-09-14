@@ -11,10 +11,11 @@ namespace Resources
 	class Texture : public Resource
 	{
 	public :
-		Texture();
+		Texture(const std::string& _filepath = "");
 		~Texture();
 
-		void Load(const std::string& filepath) override;
+		void Load() override;
+		void Bind() override;
 		void Unload();
 		void DisplayGUI(int index) override;
 
@@ -28,5 +29,8 @@ namespace Resources
 	private :
 		GLuint texKey;
 		int width, height;
+
+		unsigned char* data;
+		int nrChannels;
 	};
 }

@@ -10,12 +10,14 @@ using namespace Core::myMath;
 Camera* Renderer::mainCamera;
 std::vector<Light*> Renderer::lights;
 std::vector<Mesh*> Renderer::meshList;
-int Renderer::shaderProgram;
+Resources::ShaderProgram* Renderer::shaderProgram;
 mat4x4 Renderer::modelViewMatrix;
 
 void Renderer::Update() {
+	if (!shaderProgram->isLoaded) return;
+
 	if (mainCamera && meshList.size() > 0) {
-		glUseProgram(shaderProgram);
+		glUseProgram(shaderProgram->GetProgram());
 		mainCamera->Render();
 
 		int i = 0;
@@ -25,7 +27,7 @@ void Renderer::Update() {
 			light->Render(i);
 			i++;
 		}
-		glUniform1i(glGetUniformLocation(Renderer::shaderProgram, "lightCount"), i);
+		glUniform1i(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), "lightCount"), i);
 
 		for (Mesh* mesh : meshList) {
 			mesh->Render();

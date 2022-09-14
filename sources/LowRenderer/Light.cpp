@@ -37,32 +37,32 @@ void Light::Render(int i) {
 	Vec3 lightGlobalPos = gameObject->transform.GetGlobalPosition();
 	std::string prefix = "lights[" + std::to_string(i) + "].";
 
-	glUniform1i(glGetUniformLocation(Renderer::shaderProgram, (prefix + "type").c_str()), (int)type);
+	glUniform1i(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "type").c_str()), (int)type);
 
 	Vec4 direction = gameObject->transform.GetModel() * Vec4(0, -1, 0, 0);
 
 	switch (type) {
 		case (LightType::L_DIRECTIONAL):
-			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "direction").c_str()), 1, &direction.x);
+			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "direction").c_str()), 1, &direction.x);
 			break;
 	
 		case (LightType::L_POINT):
-			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "position").c_str()), 1, &lightGlobalPos.x);
-			glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "constantAttenuation").c_str()), constantAttenuation);
-			glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "linearAttenuation").c_str()), linearAttenuation);
-			glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "quadraticAttenuation").c_str()), quadraticAttenuation);
+			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "position").c_str()), 1, &lightGlobalPos.x);
+			glUniform1f(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "constantAttenuation").c_str()), constantAttenuation);
+			glUniform1f(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "linearAttenuation").c_str()), linearAttenuation);
+			glUniform1f(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "quadraticAttenuation").c_str()), quadraticAttenuation);
 			break;
 
 		case (LightType::L_SPOT):
-			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "position").c_str()), 1, &lightGlobalPos.x);
-			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "direction").c_str()), 1, &direction.x);
-			glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "spotCutoff").c_str()), cosf(spotCutoff * (mPI / 180)));
+			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "position").c_str()), 1, &lightGlobalPos.x);
+			glUniform3fv(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "direction").c_str()), 1, &direction.x);
+			glUniform1f(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "spotCutoff").c_str()), cosf(spotCutoff * (mPI / 180)));
 	}
 
-	glUniform3fv(glGetUniformLocation(Renderer::shaderProgram, (prefix + "color").c_str()), 1, &color.x);
-	glUniform1f(glGetUniformLocation(Renderer::shaderProgram, (prefix + "intensity").c_str()), intensity);
+	glUniform3fv(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "color").c_str()), 1, &color.x);
+	glUniform1f(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), (prefix + "intensity").c_str()), intensity);
 
-	glUniform4fv(glGetUniformLocation(Renderer::shaderProgram, "ambientColor"), 1, &ambientColor.x);
+	glUniform4fv(glGetUniformLocation(Renderer::shaderProgram->GetProgram(), "ambientColor"), 1, &ambientColor.x);
 }
 
 void Light::DisplayGUI() {

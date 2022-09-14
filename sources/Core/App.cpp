@@ -141,46 +141,20 @@ void App::Init() {
 
 void App::Update() {
 #pragma region Shader
-	ResourceManager::Create(new Shader(Shader::VERTEX), "VertexShader", "resources\\Shaders\\VertexShader.vert");
-	ResourceManager::Create(new Shader(Shader::FRAGMENT), "FragmentShader", "resources\\Shaders\\FragmentShader.frag");
+
+	/*ResourceManager::Create(new Shader(Shader::VERTEX, "resources\\Shaders\\VertexShader.vert"), "VertexShader", "resources\\Shaders\\VertexShader.vert");
+	ResourceManager::Create(new Shader(Shader::FRAGMENT, "resources\\Shaders\\FragmentShader.frag"), "FragmentShader", "resources\\Shaders\\FragmentShader.frag");
 
 	int vertShader = ((Shader*)ResourceManager::Get("VertexShader"))->shaderKey;
 	int fragShader = ((Shader*)ResourceManager::Get("FragmentShader"))->shaderKey;
 
-	ResourceManager::Create(new ShaderProgram(vertShader, fragShader), "ShaderProgram");
+	ResourceManager::Create(new ShaderProgram(vertShader, fragShader), "ShaderProgram");*/
 	
 
 #pragma endregion
-	std::thread resource { ResourceManager::ReloadResources };
-	resource.join();
-	//ResourceManager::ReloadResources();
-
-	/*ResourceManager::Create(new Model(), "Blaziken", "Resources\\Objects\\blaziken.obj");
-	ResourceManager::Create(new Model(), "Bidoof", "Resources\\Objects\\Bidoof.obj");
-	ResourceManager::Create(new Model(), "Cube", "Resources\\Objects\\cube.obj");
-	ResourceManager::Create(new Model(), "Sphere", "Resources\\Objects\\sphere.obj");
-	ResourceManager::Create(new Model(), "Boo", "Resources\\Objects\\boo.obj");
-	ResourceManager::Create(new Model(), "Goomba", "Resources\\Objects\\goomba.obj");
-	ResourceManager::Create(new Model(), "Maskass", "Resources\\Objects\\maskass.obj");
-
-	CollisionDisplay::CollisionMesh::InitSphereMesh();
-	CollisionDisplay::CollisionMesh::InitCubeMesh();
-
-	Texture::InitSampler();
-	ResourceManager::Create(new Texture(), "BippaDh", "Resources\\Textures\\BippaDh.png");
-	ResourceManager::Create(new Texture(), "dog", "Resources\\Textures\\sample2.png");
-	ResourceManager::Create(new Texture(), "Blaziken Texture", "Resources\\Textures\\BlazikenTexture.png");
-	ResourceManager::Create(new Texture(), "Goomba Texture", "Resources\\Textures\\goomba.png");
-	ResourceManager::Create(new Texture(), "Boo Texture", "Resources\\Textures\\boo.png");
-	ResourceManager::Create(new Texture(), "Maskass Texture", "Resources\\Textures\\heyho_tex_hr.png");
-	ResourceManager::Create(new Texture(), "Ground Texture", "Resources\\Textures\\sol.png");
-
-	ResourceManager::Create(new Texture(), "Message", "Resources\\Textures\\Message_Icone.png");
-	ResourceManager::Create(new Texture(), "Error", "Resources\\Textures\\Error_Icone.png");
-	ResourceManager::Create(new Texture(), "Warning", "Resources\\Textures\\Warning_Icone.png");
-
-	ResourceManager::Create(new Material((Texture*)ResourceManager::Get("Goomba Texture"), Core::myMath::Vec3(1, 1, 1), 2), "goomba mat");
-	ResourceManager::Create(new Material((Texture*)ResourceManager::Get("Ground Texture"), Core::myMath::Vec3(1, 1, 1), 2), "Ground Mat");*/
+	
+	ResourceManager::InitResourceMap();
+	std::thread t{ ResourceManager::ReloadResources };
 
 
 	MainMenu mainMenu;
@@ -191,7 +165,10 @@ void App::Update() {
 
 	glEnable(GL_DEPTH_TEST);
 
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window))
+	{
+		//glfwGetWindowSize(window, &width, &height);
+		ResourceManager::UpdateBinding();
 		// input
 			// -----
 		glfwPollEvents();
@@ -237,12 +214,13 @@ void App::Update() {
 		
 	}
 
-	//Close log file();
-	
+	t.join();
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 	
+
 	// Delete all resources
 	ResourceManager::Clear();
 	scene.Destroy();

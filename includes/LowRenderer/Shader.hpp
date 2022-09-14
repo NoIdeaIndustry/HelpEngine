@@ -6,15 +6,23 @@ namespace Resources
 {
 	class Shader : public Resource
 	{
-	public:
-		void Load(const std::string& filepath) override;
-		enum ShaderType {
+	public :
+
+		void Load() override;
+		void Bind() override;
+
+		enum ShaderType
+		{
 			VERTEX,
 			FRAGMENT
 		};
 
 		int shaderKey;
 		ShaderType shaderType;
-		Shader(ShaderType _type);
+		Shader(ShaderType _type, const std::string _filepath = "");
+
+	private :
+		std::string shaderSource;
+
 	};
 }

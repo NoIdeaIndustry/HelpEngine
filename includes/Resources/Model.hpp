@@ -9,14 +9,14 @@ namespace Resources
 {
 	class Model : public Resource
 	{
-	public:
-		Model();
+	public :
+		Model(const std::string& _filepath = "");
 		~Model() {}
 
-		void Load(const std::string& filepath) override;
+		void Load() override;
 		void Unload() override;
 
-		void BindData();
+		void Bind() override;
 
 		unsigned int VAO, VBO, EBO;
 		unsigned int indexCount;

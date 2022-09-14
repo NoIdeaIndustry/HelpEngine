@@ -14,7 +14,10 @@ GLuint Texture::sampler;
 
 Texture::~Texture() {}
 
-Texture::Texture() : texKey(0) {
+Texture::Texture(const std::string& _filepath)
+	: texKey(0)
+{
+	filepath = _filepath;
 	type = Resource::ResourceType::R_TEXTURE;
 }
 
@@ -23,26 +26,33 @@ void Texture::Unload() {
 	glDeleteTextures(1, &texKey);
 }
 
-void Texture::Load(const string& filepath) {
-	int  nrChannels;
+void Texture::Load()
+{
 
 	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load(filepath.c_str(), &width, &height, &nrChannels, 0);
+	data = stbi_load(filepath.c_str(), &width, &height, &nrChannels, 0);
+	cout << filepath << endl;
+	
+}
 
+
+void Texture::Bind()
+{
 	glGenTextures(1, &texKey);
 	glBindTexture(GL_TEXTURE_2D, texKey);
 
-	if(nrChannels == 4)
+	if (nrChannels == 4)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	if(nrChannels == 3)
+	if (nrChannels == 3)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	stbi_image_free(data);
+	isLoaded = true;
 }
 
-
-void Texture::DisplayGUI(int index) {
+void Texture::DisplayGUI(int index)
+{
 	ImGui::Image((ImTextureID)texKey, ImVec2(100, 100), ImVec2(0, 1), ImVec2(1, 0));
 }
 

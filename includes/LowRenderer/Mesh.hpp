@@ -15,8 +15,9 @@ namespace LowRenderer
 	class Mesh : public Core::DataStructure::MonoBehaviour
 	{
 	public:
-		Mesh(Resources::Model* _model, int _shdaerProgram);
-		Mesh(Resources::Model* _model, int _shdaerProgram, Resources::Material* _mat);
+		Mesh(Resources::Model* _model, Resources::ShaderProgram* _shaderProgram,
+			Resources::Material* _mat = nullptr);
+
 
 		void Start() override;
 		void Update() override;
@@ -28,7 +29,7 @@ namespace LowRenderer
 		Resources::Material* material;
 
 		Resources::Model* model;
-		int shaderProgram;
+		Resources::ShaderProgram* shaderProgram;
 		Core::myMath::mat4x4 modelMatrix;
 	};
 }

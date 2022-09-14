@@ -8,7 +8,9 @@
 #include <IMGUI/imgui_impl_glfw.h>
 #include "LowRenderer/Mesh.hpp"
 #include "Physics/CollisionDisplay.hpp"
+#include <thread>
 #include <filesystem>
+#include <Threading/PoolSystem.hpp>
 
 using namespace Resources;
 using namespace std;
@@ -18,9 +20,9 @@ queue<Resource*> ResourceManager::needToBeBinded;
 
 Resource* ResourceManager::Create(Resource* resource, const string& name, const string& path) {
 	resource->name = name;
-	resource->Load(path);
-
-	if (!resource) {
+	resource->Load();
+	if (!resource)
+	{
 		DEBUG_LOGERROR("Resource loading failed.");
 		return nullptr;
 	}
@@ -62,11 +64,11 @@ void ResourceManager::DisplayGUI() {
 
 	int index = 0;
 	for (std::pair<string, Resource*> resource : resourceMap) {
-		if ((int)resource.second->type == 2 || (int)resource.second->type == 3) {
+		/*if ((int)resource.second->type == 2 || (int)resource.second->type == 3) {
 			continue;
-		}
+		}*/
 
-		bool headerOpen = ImGui::CollapsingHeader(resource.first.c_str());
+		bool headerOpen = ImGui::CollapsingHeader((resource.first + (resource.second->isLoaded ? "true" : "false")).c_str());
 
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
 			void** ptr = new void* (resource.second);
@@ -85,21 +87,106 @@ void ResourceManager::DisplayGUI() {
 	ImGui::End();
 }
 
-void ResourceManager::InitResourceMap() {
-	//std::string path = "resources";
-	//for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
-	//{
-	//	//std::cout << entry.path().filename() << std::endl;
-	//}
-	resourceMap.emplace("Resources\\Textures\\boo.png", nullptr);
-}
+void ResourceManager::InitResourceMap()
+{
+	std::string path = "resources";
+	for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+	{
+		string filename = (strrchr(entry.path().u8string().c_str(), '\\') ? strrchr(entry.path().u8string().c_str(), '\\') + 1 : "");
+		
 
-void ResourceManager::UpdateBinding() {
+		string extension = (strrchr(entry.path().u8string().c_str(), '.') ? strrchr(entry.path().u8string().c_str(), '.') + 1 : "folder");
+		//cout << entry.path() << endl;
 
-}
-
-void ResourceManager::ReloadResources() {
-	for (std::pair<string, Resource*> resource : resourceMap) {
-
+		if (extension == "folder") continue;
+		if (extension == "png")
+		{
+			Texture* texture = new Texture(entry.path().u8string());
+			texture->name = filename;
+			resourceMap.emplace(filename, texture);
+			continue;
+		}
+		if (extension == "obj")
+		{
+			Model* model = new Model(entry.path().u8string());
+			model->name = filename;
+			resourceMap.emplace(filename, model);
+			continue;
+		}
+		if (extension == "frag")
+		{
+			Shader* model = new Shader(Shader::FRAGMENT, entry.path().u8string());
+			model->name = filename;
+			resourceMap.emplace(filename, model);
+			continue;
+		}
+		if (extension == "vert")
+		{
+			Shader* model = new Shader(Shader::VERTEX, entry.path().u8string());
+			model->name = filename;
+			resourceMap.emplace(filename, model);
+			continue;
+		}
 	}
+
+	Shader* vert = ((Shader*)ResourceManager::Get("VertexShader.vert"));
+	Shader* frag = ((Shader*)ResourceManager::Get("FragmentShader.frag"));
+	if (!frag || !vert) return;
+	ResourceManager::Create(new ShaderProgram(vert, frag), "ShaderProgram");
+}
+
+void ResourceManager::UpdateBinding()
+{
+	if (needToBeBinded.size() > 0)
+	{
+		needToBeBinded.front()->Bind();
+		needToBeBinded.pop();
+	}
+
+	if (allResourcesareLoaded) return;
+	allResourcesareLoaded = true;
+	for (std::pair<string, Resource*> resource : resourceMap)
+	{
+		if (!resource.second->isLoaded)
+			allResourcesareLoaded = false;
+	}
+	if (allResourcesareLoaded) pool.stopPool();
+}
+
+void ResourceManager::ReloadResources()
+{
+	
+
+	for (int i = 0; i < 5; i++) {
+		pool.registerThread(new NThread::Thread(pool, std::to_string(i)));
+	}
+
+	for (std::pair<string, Resource*> resource : resourceMap)
+	{
+		//if (resource.second->type == Resource::ResourceType::R_SHADERPROGRAM) continue;
+		/*this_thread::sleep_for(chrono::milliseconds(300));*/
+
+		pool.registerTask(
+			NThread::ResourceTask {
+				[](Resource* r) {
+					r->Load();
+					needToBeBinded.push(r);
+				}, resource.second
+			}
+		);
+	}
+
+	pool.registerTask(
+		NThread::ResourceTask { 
+			[](Resource* r) {
+				Shader* vert = ((Shader*)ResourceManager::Get("VertexShader.vert"));
+				Shader* frag = ((Shader*)ResourceManager::Get("FragmentShader.frag"));
+				if (!ResourceManager::Get("ShaderProgram")) return;
+				while (!(frag->isLoaded && vert->isLoaded));
+				needToBeBinded.push(ResourceManager::Get("ShaderProgram"));
+			}, nullptr
+		}
+	);
+
+	//pool.stopPool();
 }

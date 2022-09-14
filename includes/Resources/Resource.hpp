@@ -25,9 +25,13 @@ namespace Resources
 
 		bool isLoaded = false;
 
-		virtual void Load(const std::string& filepath) {}
+		virtual void Load() {}
 		virtual void Bind() {}
 		virtual void DisplayGUI(int index) {}
 		virtual void Unload() {}
+
+	protected:
+		std::string filepath;
+
 	};
 }

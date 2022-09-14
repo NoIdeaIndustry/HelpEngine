@@ -41,12 +41,12 @@ void Log::Update() {
 
 	for (string log : logs) {
 		ImGui::Separator();
-
-		switch (log[0]) {
-			case 'M':ImGui::Image((ImTextureID)messageIcon->GetTexKey(), ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), ImVec4(0.6f, 0.6f, 0.6f, 1)); break;
-			case 'E':ImGui::Image((ImTextureID)errorIcon->GetTexKey(), ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0)); break;
-			case 'W':ImGui::Image((ImTextureID)warningIcon->GetTexKey(), ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0)); break;
-			default: break;
+		switch (log[0])
+		{
+		case 'M': if(messageIcon && messageIcon->isLoaded) ImGui::Image((ImTextureID)messageIcon->GetTexKey(), ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), ImVec4(0.6f, 0.6f, 0.6f, 1)); break;
+		case 'E': if(errorIcon && errorIcon->isLoaded) ImGui::Image((ImTextureID)errorIcon->GetTexKey(), ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0)); break;
+		case 'W': if(warningIcon && warningIcon->isLoaded) ImGui::Image((ImTextureID)warningIcon->GetTexKey(), ImVec2(50, 50), ImVec2(0, 1), ImVec2(1, 0)); break;
+		default: break;
 		}
 
 		ImGui::SameLine();

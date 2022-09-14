@@ -236,10 +236,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\GLFW\glfw3.dll" />
+    <None Include="resources\Shaders\FragmentShader.frag" />
+    <None Include="resources\Shaders\VertexShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="libraries\GLFW\sources\glfw3.lib" />
     <Library Include="libraries\GLFW\sources\glfw3dll.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\Textures\BelugaCursed.png" />
+    <Image Include="resources\Textures\BippaDh.png" />
+    <Image Include="resources\Textures\BlazikenTexture.png" />
+    <Image Include="resources\Textures\boo.png" />
+    <Image Include="resources\Textures\DefaultTex.png" />
+    <Image Include="resources\Textures\Error_Icone.png" />
+    <Image Include="resources\Textures\goomba.png" />
+    <Image Include="resources\Textures\heyho_tex_hr.png" />
+    <Image Include="resources\Textures\Message_Icone.png" />
+    <Image Include="resources\Textures\sample.png" />
+    <Image Include="resources\Textures\sample2.png" />
+    <Image Include="resources\Textures\Silvia-Seal.png" />
+    <Image Include="resources\Textures\Skybox.png" />
+    <Image Include="resources\Textures\sol.png" />
+    <Image Include="resources\Textures\wall.jpg" />
+    <Image Include="resources\Textures\WaluigiBody.png" />
+    <Image Include="resources\Textures\Warning_Icone.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

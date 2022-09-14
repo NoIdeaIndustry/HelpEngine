@@ -10,9 +10,11 @@ using namespace Resources;
 using namespace std;
 using namespace Core::myMath;
  
-Model::Model() {
+
+Model::Model(const std::string& _filepath)
+{
+	filepath = _filepath;
 	type = Resource::ResourceType::R_MODEL;
-	Resource();
 }
 
 
@@ -29,7 +31,8 @@ void Model::Unload() {
 	this->~Model();
 }
 
-void Model::Load(const std::string& filepath) {
+void Model::Load()
+{
 	fstream file;
 	file.open(filepath.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
 
@@ -58,10 +61,12 @@ void Model::Load(const std::string& filepath) {
 		}
 	}
 
-	BindData();
+	//BindData();
+
 }
 
-void Model::BindData() {
+void Model::Bind()
+{
 	float* vertices = new float[(triangles.size() / 3) * 8];
 	int* indices = new int[triangles.size() / 3];
 
@@ -110,7 +115,7 @@ void Model::BindData() {
 	delete[] vertices;
 	delete[] indices;
 
-	bool isLoaded = true;
+	isLoaded = true;
 }
 
 void Model::ParseVertex(const string& line) {
