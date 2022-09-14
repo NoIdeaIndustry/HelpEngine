@@ -165,6 +165,7 @@
     <ClCompile Include="sources\Core\GameObject.cpp" />
     <ClCompile Include="sources\Core\Scene.cpp" />
     <ClCompile Include="sources\Interface\MainMenu.cpp" />
+    <ClCompile Include="sources\Interface\Theme.cpp" />
     <ClCompile Include="sources\LowRenderer\Camera.cpp" />
     <ClCompile Include="sources\LowRenderer\Light.cpp" />
     <ClCompile Include="sources\LowRenderer\Renderer.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="sources\Threading\Thread.cpp" />
     <ClCompile Include="sources\Utils\Debug.cpp" />
     <ClCompile Include="sources\Utils\Input.cpp" />
+    <ClCompile Include="sources\Utils\Save.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\Components\CameraBehaviour.hpp" />
@@ -193,6 +195,7 @@
     <ClInclude Include="includes\Core\Scene.hpp" />
     <ClInclude Include="includes\Interface\Interface.hpp" />
     <ClInclude Include="includes\Interface\MainMenu.hpp" />
+    <ClInclude Include="includes\Interface\Theme.hpp" />
     <ClInclude Include="includes\LowRenderer\Camera.hpp" />
     <ClInclude Include="includes\LowRenderer\Light.hpp" />
     <ClInclude Include="includes\LowRenderer\Mesh.hpp" />
@@ -213,6 +216,7 @@
     <ClInclude Include="includes\Utils\Colors.hpp" />
     <ClInclude Include="includes\Utils\Debug.hpp" />
     <ClInclude Include="includes\Utils\Input.hpp" />
+    <ClInclude Include="includes\Utils\Save.hpp" />
     <ClInclude Include="includes\Utils\Time.hpp" />
     <ClInclude Include="libraries\GLAD\includes\glad.h" />
     <ClInclude Include="libraries\GLFW\includes\glfw3.h" />

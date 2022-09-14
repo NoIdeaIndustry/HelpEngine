@@ -23,6 +23,8 @@
 #include "Physics/CollisionDisplay.hpp"
 #include <thread>
 
+#include "Utils//Save.hpp"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <STB_Image/stb_image.h>
 
@@ -80,6 +82,13 @@ void APIENTRY glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 
 
 void App::Init() {
+	Data::SaveData save;
+	save.Exist();
+
+	if (!save.fileExist) {
+		save.Create();
+	}
+
 	// glfw: initialize and configure
 	// ------------------------------
 	glfwInit();
@@ -195,7 +204,11 @@ void App::Update() {
 
 		// render
 		// ------
-		glClearColor(0.f, 0.f, 0.2f, 1.0f);
+		if(!mainMenu.isInMenu) 
+			glClearColor(0.f, 0.f, 0.2f, 1.0f); 
+		else
+			glClearColor(0.f, 0.f, 0.0f, 1.0f);
+
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -203,6 +216,7 @@ void App::Update() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
 		if(!mainMenu.isPressedPlay && !mainMenu.isPressedOptions) {
 			mainMenu.DisplayGUI(window);
 		}

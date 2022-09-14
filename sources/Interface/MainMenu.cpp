@@ -1,6 +1,12 @@
 #include "Interface/MainMenu.hpp"
+#include "Interface/Theme.hpp"
+#include "Core/App.hpp"
 
 using namespace Resources;
+using namespace CustomInterface::CustomTheme;
+
+const int GUI_WIDTH = 900;
+const int GUI_HEIGHT = 250;
 
 void MainMenu::Update() {
 	if (isPressedPlay) {
@@ -14,24 +20,30 @@ void MainMenu::Update() {
 }
 
 void MainMenu::DisplayGUI(GLFWwindow* _window) {
-	ImGui::Begin(" ");
-	ImGui::SetWindowPos(ImVec2(700, 300), 0);
-	ImGui::SetWindowSize(ImVec2(800, 600), 0);
+	isInMenu = true;
+	Theme::LoadGoldTheme(true);
+
+	bool l_ShowWindow;
+	ImGui::Begin(" ", &l_ShowWindow, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);;
+	ImGui::SetWindowPos(ImVec2((Core::App::p_AppSettings.APP_WIDTH - GUI_WIDTH)/2, (Core::App::p_AppSettings.APP_HEIGHT - GUI_HEIGHT)/2), 0);
+	ImGui::SetWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT), 0);
 	ImGui::SetWindowFontScale(2);
-	ImGui::Dummy(ImVec2(250, 250));
-	ImGui::Indent(200);
+	ImGui::Dummy(ImVec2(0, GUI_HEIGHT / 4));
+	ImGui::Indent(GUI_WIDTH/7);
+
 	TextCentered("Main Menu");
 
-	if (ImGui::Button("Play", ImVec2(100,100))) {
+	if (ImGui::Button("Play", ImVec2(150, 100))) {
 		isPressedPlay = true;
 		if (firstTime) {
 			scene.Start();
+			isInMenu = false;
 		}
 		firstTime = false;
 	}
 	ImGui::SameLine();
 
-	if (ImGui::Button("Restart", ImVec2(100, 100))) {
+	if (ImGui::Button("Restart", ImVec2(150, 100))) {
 		isPressedPlay = true;
 		scene.Destroy();
 		scene.Start();
@@ -39,12 +51,12 @@ void MainMenu::DisplayGUI(GLFWwindow* _window) {
 	}
 
 	ImGui::SameLine();
-	if (ImGui::Button("Options", ImVec2(100, 100))) {
+	if (ImGui::Button("Options", ImVec2(150, 100))) {
 		isPressedOptions = true;
 	}
 
 	ImGui::SameLine();
-	if (ImGui::Button("Quit", ImVec2(100, 100))) {
+	if (ImGui::Button("Quit", ImVec2(150, 100))) {
 		glfwSetWindowShouldClose(_window, true);
 	}
 
@@ -52,48 +64,61 @@ void MainMenu::DisplayGUI(GLFWwindow* _window) {
 }
 
 void MainMenu::DisplayGUIOptions() {
-	ImGui::Begin(" ");
-	ImGui::SetWindowPos(ImVec2(700, 300), 0);
-	ImGui::SetWindowSize(ImVec2(800, 600), 0);
+
+	bool l_ShowWindow;
+	ImGui::Begin(" ", &l_ShowWindow, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
+	ImGui::SetWindowPos(ImVec2((Core::App::p_AppSettings.APP_WIDTH - GUI_WIDTH) / 2, (Core::App::p_AppSettings.APP_HEIGHT - GUI_HEIGHT) / 2), 0);
+	ImGui::SetWindowSize(ImVec2(GUI_WIDTH+50, GUI_HEIGHT), 0);
 	ImGui::SetWindowFontScale(2);
-	ImGui::Dummy(ImVec2(250, 250));
-	ImGui::Indent(250);
+	ImGui::Dummy(ImVec2(0, GUI_HEIGHT / 6));
+	ImGui::Indent(GUI_WIDTH / 26);
+
 	TextCentered("Options");
 
-	if (ImGui::Button("Forward", ImVec2(120, 30))) {
+	if (ImGui::Button("Forward", ImVec2(120, 100))) {
 		isWaitingToSelect = true;
 		isNewKeyForward = true;
+
+		ImGui::Text(ImGui::GetKeyName(Input::newKeyForward));
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyForward));
 
-	if (ImGui::Button("Left", ImVec2(120, 30))){
+
+	ImGui::SameLine();
+	if (ImGui::Button("Left", ImVec2(120, 100))){
 		isWaitingToSelect = true;
 		isNewKeyLeft = true;
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyLeft));
 
-	if (ImGui::Button("Right", ImVec2(120, 30))) {
+	ImGui::SameLine();
+	if (ImGui::Button("Right", ImVec2(120, 100))) {
 		isWaitingToSelect = true;
 		isNewKeyRight = true;
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyRight));
 
-	if (ImGui::Button("Backward", ImVec2(120, 30))) {
+	ImGui::SameLine();
+	if (ImGui::Button("Backward", ImVec2(120, 100))) {
 		isWaitingToSelect = true;
 		isNewKeyBackward = true;
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyBackward));
 
-	if (ImGui::Button("Jump", ImVec2(120, 30))) {
+	ImGui::SameLine();
+	if (ImGui::Button("Jump", ImVec2(120, 100))) {
 		isWaitingToSelect = true;
 		isNewKeyJump = true;
 	}
 	ImGui::SameLine();
 	ImGui::Text(ImGui::GetKeyName(Input::newKeyJump));
+
+	ImGui::Dummy(ImVec2(0, GUI_HEIGHT));
+	TextCentered("Press ESC to go back");
 
 	if (isWaitingToSelect && Input::IsAnyKeyDown()) {
 		if (isNewKeyForward) {
@@ -119,7 +144,7 @@ void MainMenu::DisplayGUIOptions() {
 		isNewKeyBackward = false;
 		isNewKeyJump = false;
 	}
-	ImGui::Text("Press ESC to go back");
+
 	ImGui::End();
 }
 

@@ -30,4 +30,6 @@ public:
 	void DisplayGUIOptions();
 	void ReturnMainMenu(GLFWwindow* _window);
 	void TextCentered(std::string text);
+
+	inline static bool isInMenu;
 };
