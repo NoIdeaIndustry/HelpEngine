@@ -151,13 +151,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="libraries\GLAD\sources\glad.c" />
-    <ClCompile Include="libraries\IMGUI\imgui.cpp" />
-    <ClCompile Include="libraries\IMGUI\imgui_demo.cpp" />
-    <ClCompile Include="libraries\IMGUI\imgui_draw.cpp" />
-    <ClCompile Include="libraries\IMGUI\imgui_impl_glfw.cpp" />
-    <ClCompile Include="libraries\IMGUI\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="libraries\IMGUI\imgui_tables.cpp" />
-    <ClCompile Include="libraries\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="libraries\IMGUI\sources\imgui.cpp" />
+    <ClCompile Include="libraries\IMGUI\sources\imgui_demo.cpp" />
+    <ClCompile Include="libraries\IMGUI\sources\imgui_draw.cpp" />
+    <ClCompile Include="libraries\IMGUI\sources\imgui_impl_glfw.cpp" />
+    <ClCompile Include="libraries\IMGUI\sources\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="libraries\IMGUI\sources\imgui_tables.cpp" />
+    <ClCompile Include="libraries\IMGUI\sources\imgui_widgets.cpp" />
     <ClCompile Include="sources\Components\CameraBehaviour.cpp" />
     <ClCompile Include="sources\Components\CharacterMouvement.cpp" />
     <ClCompile Include="sources\Components\Respawn.cpp" />
@@ -181,11 +181,12 @@
     <ClCompile Include="sources\Resources\ResourceManager.cpp" />
     <ClCompile Include="sources\Resources\Texture.cpp" />
     <ClCompile Include="Sources\Main.cpp" />
-    <ClCompile Include="sources\Threading\PoolSystem.cpp" />
-    <ClCompile Include="sources\Threading\Thread.cpp" />
     <ClCompile Include="sources\Utils\Debug.cpp" />
     <ClCompile Include="sources\Utils\Input.cpp" />
-    <ClCompile Include="sources\Utils\Save.cpp" />
+    <ClCompile Include="sources\Utils\Json\JsonReader.cpp" />
+    <ClCompile Include="sources\Utils\Json\JsonWriter.cpp" />
+    <ClCompile Include="sources\Utils\Threading\PoolSystem.cpp" />
+    <ClCompile Include="sources\Utils\Threading\Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\Components\CameraBehaviour.hpp" />
@@ -210,29 +211,30 @@
     <ClInclude Include="includes\Resources\Resource.hpp" />
     <ClInclude Include="includes\Resources\ResourceManager.hpp" />
     <ClInclude Include="includes\Resources\Texture.hpp" />
-    <ClInclude Include="includes\Threading\AtomicMutex.hpp" />
-    <ClInclude Include="includes\Threading\PoolSystem.hpp" />
-    <ClInclude Include="includes\Threading\Thread.hpp" />
     <ClInclude Include="includes\Utils\Colors.hpp" />
     <ClInclude Include="includes\Utils\Debug.hpp" />
     <ClInclude Include="includes\Utils\Input.hpp" />
-    <ClInclude Include="includes\Utils\Save.hpp" />
+    <ClInclude Include="includes\Utils\Json\JsonReader.hpp" />
+    <ClInclude Include="includes\Utils\Json\JsonWriter.hpp" />
+    <ClInclude Include="includes\Utils\Threading\AtomicMutex.hpp" />
+    <ClInclude Include="includes\Utils\Threading\PoolSystem.hpp" />
+    <ClInclude Include="includes\Utils\Threading\Thread.hpp" />
     <ClInclude Include="includes\Utils\Time.hpp" />
     <ClInclude Include="libraries\GLAD\includes\glad.h" />
     <ClInclude Include="libraries\GLFW\includes\glfw3.h" />
     <ClInclude Include="libraries\GLFW\includes\glfw3native.h" />
-    <ClInclude Include="libraries\IMGUI\imconfig.h" />
-    <ClInclude Include="libraries\IMGUI\imgui.h" />
-    <ClInclude Include="libraries\IMGUI\imgui_impl_glfw.h" />
-    <ClInclude Include="libraries\IMGUI\imgui_impl_opengl3.h" />
-    <ClInclude Include="libraries\IMGUI\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="libraries\IMGUI\imgui_internal.h" />
-    <ClInclude Include="libraries\IMGUI\imstb_rectpack.h" />
-    <ClInclude Include="libraries\IMGUI\imstb_textedit.h" />
-    <ClInclude Include="libraries\IMGUI\imstb_truetype.h" />
-    <ClInclude Include="libraries\KHR\khrplatform.h" />
+    <ClInclude Include="libraries\IMGUI\includes\imconfig.h" />
+    <ClInclude Include="libraries\IMGUI\includes\imgui.h" />
+    <ClInclude Include="libraries\IMGUI\includes\imgui_impl_glfw.h" />
+    <ClInclude Include="libraries\IMGUI\includes\imgui_impl_opengl3.h" />
+    <ClInclude Include="libraries\IMGUI\includes\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="libraries\IMGUI\includes\imgui_internal.h" />
+    <ClInclude Include="libraries\KHR\includes\khrplatform.h" />
     <ClInclude Include="libraries\Math.hpp" />
-    <ClInclude Include="libraries\STB_IMAGE\stb_image.h" />
+    <ClInclude Include="libraries\STB_IMAGE\includes\imstb_rectpack.h" />
+    <ClInclude Include="libraries\STB_IMAGE\includes\imstb_textedit.h" />
+    <ClInclude Include="libraries\STB_IMAGE\includes\imstb_truetype.h" />
+    <ClInclude Include="libraries\STB_IMAGE\includes\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\GLFW\glfw3.dll" />
@@ -242,25 +244,6 @@
   <ItemGroup>
     <Library Include="libraries\GLFW\sources\glfw3.lib" />
     <Library Include="libraries\GLFW\sources\glfw3dll.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="resources\Textures\BelugaCursed.png" />
-    <Image Include="resources\Textures\BippaDh.png" />
-    <Image Include="resources\Textures\BlazikenTexture.png" />
-    <Image Include="resources\Textures\boo.png" />
-    <Image Include="resources\Textures\DefaultTex.png" />
-    <Image Include="resources\Textures\Error_Icone.png" />
-    <Image Include="resources\Textures\goomba.png" />
-    <Image Include="resources\Textures\heyho_tex_hr.png" />
-    <Image Include="resources\Textures\Message_Icone.png" />
-    <Image Include="resources\Textures\sample.png" />
-    <Image Include="resources\Textures\sample2.png" />
-    <Image Include="resources\Textures\Silvia-Seal.png" />
-    <Image Include="resources\Textures\Skybox.png" />
-    <Image Include="resources\Textures\sol.png" />
-    <Image Include="resources\Textures\wall.jpg" />
-    <Image Include="resources\Textures\WaluigiBody.png" />
-    <Image Include="resources\Textures\Warning_Icone.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

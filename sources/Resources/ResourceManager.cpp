@@ -3,14 +3,14 @@
 #include "Resources/Material.hpp"
 #include "Interface/Interface.hpp"
 #include <iostream>
-#include <IMGUI/imgui.h>
-#include <IMGUI/imgui_impl_opengl3.h>
-#include <IMGUI/imgui_impl_glfw.h>
+#include <IMGUI/includes/imgui.h>
+#include <IMGUI/includes/imgui_impl_opengl3.h>
+#include <IMGUI/includes/imgui_impl_glfw.h>
 #include "LowRenderer/Mesh.hpp"
 #include "Physics/CollisionDisplay.hpp"
 #include <thread>
 #include <filesystem>
-#include <Threading/PoolSystem.hpp>
+#include "Utils/Threading/PoolSystem.hpp"
 
 using namespace Resources;
 using namespace std;
@@ -64,11 +64,7 @@ void ResourceManager::DisplayGUI() {
 
 	int index = 0;
 	for (std::pair<string, Resource*> resource : resourceMap) {
-		/*if ((int)resource.second->type == 2 || (int)resource.second->type == 3) {
-			continue;
-		}*/
-
-		bool headerOpen = ImGui::CollapsingHeader((resource.first + (resource.second->isLoaded ? "true" : "false")).c_str());
+		bool headerOpen = ImGui::CollapsingHeader((resource.first + (resource.second->isLoaded ? " true" : " false")).c_str());
 
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
 			void** ptr = new void* (resource.second);
@@ -155,38 +151,52 @@ void ResourceManager::UpdateBinding()
 
 void ResourceManager::ReloadResources()
 {
-	
+	auto begin = std::chrono::high_resolution_clock::now();
 
-	for (int i = 0; i < 5; i++) {
-		pool.registerThread(new NThread::Thread(pool, std::to_string(i)));
-	}
+	if (asyncLoading) {
 
-	for (std::pair<string, Resource*> resource : resourceMap)
-	{
-		//if (resource.second->type == Resource::ResourceType::R_SHADERPROGRAM) continue;
-		/*this_thread::sleep_for(chrono::milliseconds(300));*/
+		for (int i = 0; i < 5; i++) {
+			pool.registerThread(new NThread::Thread(pool, std::to_string(i)));
+		}
+
+		for (std::pair<string, Resource*> resource : resourceMap)
+		{
+			pool.registerTask(
+				NThread::ResourceTask{
+					[](Resource* r) {
+						r->Load();
+						needToBeBinded.push(r);
+					}, resource.second
+				}
+			);
+		}
 
 		pool.registerTask(
-			NThread::ResourceTask {
+			NThread::ResourceTask{
 				[](Resource* r) {
-					r->Load();
-					needToBeBinded.push(r);
-				}, resource.second
+					Shader* vert = ((Shader*)ResourceManager::Get("VertexShader.vert"));
+					Shader* frag = ((Shader*)ResourceManager::Get("FragmentShader.frag"));
+					if (!ResourceManager::Get("ShaderProgram")) return;
+					while (!(frag->isLoaded && vert->isLoaded));
+					needToBeBinded.push(ResourceManager::Get("ShaderProgram"));
+				}, nullptr
 			}
 		);
 	}
-
-	pool.registerTask(
-		NThread::ResourceTask { 
-			[](Resource* r) {
-				Shader* vert = ((Shader*)ResourceManager::Get("VertexShader.vert"));
-				Shader* frag = ((Shader*)ResourceManager::Get("FragmentShader.frag"));
-				if (!ResourceManager::Get("ShaderProgram")) return;
-				while (!(frag->isLoaded && vert->isLoaded));
-				needToBeBinded.push(ResourceManager::Get("ShaderProgram"));
-			}, nullptr
+	else {
+		for (std::pair<string, Resource*> resource : resourceMap) {
+			resource.second->Load();
 		}
-	);
+	}
 
-	//pool.stopPool();
+	auto end = std::chrono::high_resolution_clock::now();
+	auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+	float benchmark = elapsed.count() * 1e-9;
+
+	if (asyncLoading) {
+		std::cout << "[Async] Resources loading took: " << benchmark << " sec" << std::endl;
+	}
+	else {
+		std::cout << "[Default] Resources loading took: " << benchmark << " sec" << std::endl;
+	}
 }

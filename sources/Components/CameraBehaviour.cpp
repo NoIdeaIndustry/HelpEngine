@@ -1,7 +1,7 @@
 #include "Components/CameraBehaviour.hpp"
-#include <IMGUI/imgui.h>
-#include <IMGUI/imgui_impl_opengl3.h>
-#include <IMGUI/imgui_impl_glfw.h>
+#include <IMGUI/includes/imgui.h>
+#include <IMGUI/includes/imgui_impl_opengl3.h>
+#include <IMGUI/includes/imgui_impl_glfw.h>
 #include "Utils/Time.hpp"
 #include "Utils/Input.hpp"
 

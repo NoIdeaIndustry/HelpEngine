@@ -17,16 +17,16 @@
 #include <Resources/ResourceManager.hpp>
 #include <chrono>
 #include <ctime>
-#include <IMGUI/imgui.h>
-#include <IMGUI/imgui_impl_opengl3.h>
-#include <IMGUI/imgui_impl_glfw.h>
+#include <IMGUI/includes/imgui.h>
+#include <IMGUI/includes/imgui_impl_opengl3.h>
+#include <IMGUI/includes/imgui_impl_glfw.h>
 #include "Physics/CollisionDisplay.hpp"
 #include <thread>
 
-#include "Utils//Save.hpp"
+//#include "Utils/Json/Save.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <STB_Image/stb_image.h>
+#include <STB_IMAGE/includes/stb_image.h>
 
 using namespace Core;
 using namespace Resources;
@@ -82,12 +82,20 @@ void APIENTRY glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 
 
 void App::Init() {
-	Data::SaveData save;
+	/*Data::SaveData save;
 	save.Exist();
 
 	if (!save.fileExist) {
 		save.Create();
-	}
+	}*/
+
+	p_AppSettings = {
+		1920,
+		1090,
+		4,
+		5,
+		(char*)"Engine",
+	};
 
 	// glfw: initialize and configure
 	// ------------------------------
@@ -154,8 +162,7 @@ void App::Update() {
 #pragma endregion
 	
 	ResourceManager::InitResourceMap();
-	std::thread t{ ResourceManager::ReloadResources };
-
+	ResourceManager::ReloadResources();
 
 	MainMenu mainMenu;
 	Core::Debug::Log::Init();
@@ -214,8 +221,6 @@ void App::Update() {
 		
 	}
 
-	t.join();
-
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -231,7 +236,6 @@ void App::Update() {
 	// ------------------------------------------------------------------
 	glfwTerminate();
 }
-
 
 void App::processInput(GLFWwindow* _window) {
 	if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)

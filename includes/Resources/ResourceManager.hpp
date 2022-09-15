@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <queue>
-#include <Threading/PoolSystem.hpp>
+#include "Utils/Threading/PoolSystem.hpp"
 #include <Resources/Resource.hpp>
 
 namespace Resources
@@ -11,6 +11,9 @@ namespace Resources
 	class ResourceManager
 	{
 	public :
+		inline static bool asyncLoading = false;
+
+
 		static void DisplayGUI();
 	
 		static Resource* Create(Resource* resource, const std::string& name, const std::string& path);

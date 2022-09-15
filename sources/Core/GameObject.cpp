@@ -1,7 +1,7 @@
 #include "Core/Scene.hpp"
-#include <IMGUI/imgui.h>
-#include <IMGUI/imgui_impl_opengl3.h>
-#include <IMGUI/imgui_impl_glfw.h>
+#include <IMGUI/includes/imgui.h>
+#include <IMGUI/includes/imgui_impl_opengl3.h>
+#include <IMGUI/includes/imgui_impl_glfw.h>
 #include "LowRenderer/Camera.hpp"
 #include "LowRenderer/Light.hpp"
 #include "LowRenderer/Mesh.hpp"

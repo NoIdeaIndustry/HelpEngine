@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="libraries\GLAD\sources\glad.c">
+      <Filter>libraries\GLAD\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\IMGUI\sources\imgui.cpp">
+      <Filter>libraries\IMGUI\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\IMGUI\sources\imgui_demo.cpp">
+      <Filter>libraries\IMGUI\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\IMGUI\sources\imgui_draw.cpp">
+      <Filter>libraries\IMGUI\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\IMGUI\sources\imgui_impl_glfw.cpp">
+      <Filter>libraries\IMGUI\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\IMGUI\sources\imgui_impl_opengl3.cpp">
+      <Filter>libraries\IMGUI\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\IMGUI\sources\imgui_tables.cpp">
+      <Filter>libraries\IMGUI\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\IMGUI\sources\imgui_widgets.cpp">
+      <Filter>libraries\IMGUI\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Core\App.cpp">
+      <Filter>sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\LowRenderer\Camera.cpp">
+      <Filter>sources\LowRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Components\CameraBehaviour.cpp">
+      <Filter>sources\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Components\CharacterMouvement.cpp">
+      <Filter>sources\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Physics\CollisionDisplay.cpp">
+      <Filter>sources\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Physics\Collider.cpp">
+      <Filter>sources\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Physics\Collision.cpp">
+      <Filter>sources\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Utils\Debug.cpp">
+      <Filter>sources\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Utils\Input.cpp">
+      <Filter>sources\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\LowRenderer\Light.cpp">
+      <Filter>sources\LowRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Core\GameObject.cpp">
+      <Filter>sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Core\Scene.cpp">
+      <Filter>sources\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Main.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Interface\MainMenu.cpp">
+      <Filter>sources\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Resources\Material.cpp">
+      <Filter>sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Resources\Mesh.cpp">
+      <Filter>sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Resources\Model.cpp">
+      <Filter>sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\LowRenderer\Renderer.cpp">
+      <Filter>sources\LowRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Components\Respawn.cpp">
+      <Filter>sources\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Interface\Theme.cpp">
+      <Filter>sources\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Resources\Texture.cpp">
+      <Filter>sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Resources\ResourceManager.cpp">
+      <Filter>sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Physics\RigidBody.cpp">
+      <Filter>sources\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\LowRenderer\Shader.cpp">
+      <Filter>sources\LowRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\LowRenderer\ShaderProgram.cpp">
+      <Filter>sources\LowRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Utils\Json\JsonReader.cpp">
+      <Filter>sources\Utils\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Utils\Json\JsonWriter.cpp">
+      <Filter>sources\Utils\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Utils\Threading\PoolSystem.cpp">
+      <Filter>sources\Utils\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\Utils\Threading\Thread.cpp">
+      <Filter>sources\Utils\Threading</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libraries\GLAD\includes\glad.h">
+      <Filter>libraries\GLAD\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\GLFW\includes\glfw3.h">
+      <Filter>libraries\GLFW\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\GLFW\includes\glfw3native.h">
+      <Filter>libraries\GLFW\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\IMGUI\includes\imconfig.h">
+      <Filter>libraries\IMGUI\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\IMGUI\includes\imgui.h">
+      <Filter>libraries\IMGUI\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\IMGUI\includes\imgui_impl_glfw.h">
+      <Filter>libraries\IMGUI\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\IMGUI\includes\imgui_impl_opengl3.h">
+      <Filter>libraries\IMGUI\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\IMGUI\includes\imgui_impl_opengl3_loader.h">
+      <Filter>libraries\IMGUI\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\IMGUI\includes\imgui_internal.h">
+      <Filter>libraries\IMGUI\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\STB_IMAGE\includes\stb_image.h">
+      <Filter>libraries\STB_IMAGE\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\KHR\includes\khrplatform.h">
+      <Filter>libraries\KHR\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Core\App.hpp">
+      <Filter>includes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\LowRenderer\Camera.hpp">
+      <Filter>includes\LowRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Components\CameraBehaviour.hpp">
+      <Filter>includes\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Components\CharacterMouvement.hpp">
+      <Filter>includes\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Physics\Collision.hpp">
+      <Filter>includes\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Physics\CollisionDisplay.hpp">
+      <Filter>includes\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Utils\Colors.hpp">
+      <Filter>includes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Utils\Debug.hpp">
+      <Filter>includes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Utils\Input.hpp">
+      <Filter>includes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\LowRenderer\Light.hpp">
+      <Filter>includes\LowRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Interface\Interface.hpp">
+      <Filter>includes\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Interface\MainMenu.hpp">
+      <Filter>includes\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Resources\Material.hpp">
+      <Filter>includes\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Resources\Model.hpp">
+      <Filter>includes\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\LowRenderer\Mesh.hpp">
+      <Filter>includes\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\LowRenderer\Renderer.hpp">
+      <Filter>includes\LowRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Resources\Resource.hpp">
+      <Filter>includes\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Components\Respawn.hpp">
+      <Filter>includes\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Utils\Time.hpp">
+      <Filter>includes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Interface\Theme.hpp">
+      <Filter>includes\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Resources\Texture.hpp">
+      <Filter>includes\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Resources\ResourceManager.hpp">
+      <Filter>includes\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Physics\RigidBody.hpp">
+      <Filter>includes\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\Math.hpp">
+      <Filter>libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\LowRenderer\Shader.hpp">
+      <Filter>includes\LowRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Core\Scene.hpp">
+      <Filter>includes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\LowRenderer\ShaderProgram.hpp">
+      <Filter>includes\LowRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\STB_IMAGE\includes\imstb_rectpack.h">
+      <Filter>libraries\STB_IMAGE\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\STB_IMAGE\includes\imstb_textedit.h">
+      <Filter>libraries\STB_IMAGE\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\STB_IMAGE\includes\imstb_truetype.h">
+      <Filter>libraries\STB_IMAGE\includes</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Utils\Threading\AtomicMutex.hpp">
+      <Filter>includes\Utils\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Utils\Threading\PoolSystem.hpp">
+      <Filter>includes\Utils\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Utils\Threading\Thread.hpp">
+      <Filter>includes\Utils\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Utils\Json\JsonReader.hpp">
+      <Filter>includes\Utils\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Utils\Json\JsonWriter.hpp">
+      <Filter>includes\Utils\Json</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="libraries\GLFW\sources\glfw3.lib">
+      <Filter>libraries\GLFW\sources</Filter>
+    </Library>
+    <Library Include="libraries\GLFW\sources\glfw3dll.lib">
+      <Filter>libraries\GLFW\sources</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\Shaders\FragmentShader.frag">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\Shaders\VertexShader.vert">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="libraries\GLFW\glfw3.dll">
+      <Filter>libraries\GLFW</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="sources">
+      <UniqueIdentifier>{1b5cccf1-0b66-4e5e-b96c-23f52ec31725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes">
+      <UniqueIdentifier>{b4e59095-2f7c-4390-9bd9-85583b4bd03e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{7565e7f4-2fda-485b-9a15-85859ba555a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries">
+      <UniqueIdentifier>{8af2bf9a-98b7-4f83-8f12-cfc6038d6c07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\GLAD">
+      <UniqueIdentifier>{5a13b8b2-b362-48bb-9d45-faf05f799acb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\GLFW">
+      <UniqueIdentifier>{35857c3b-548c-4a49-b015-d5332044983a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\IMGUI">
+      <UniqueIdentifier>{12a63e3b-83b2-4d0c-b5b9-cbf49ded077d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\KHR">
+      <UniqueIdentifier>{05fac35a-e5ef-4118-9eec-4e0b31d53ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\STB_IMAGE">
+      <UniqueIdentifier>{ed771cf1-0bd4-4d34-b29a-e1c717cb8252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\GLAD\includes">
+      <UniqueIdentifier>{228eab68-5dad-4e73-85f9-0467841a49fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\GLAD\sources">
+      <UniqueIdentifier>{851538d1-9cf4-411e-babc-29b8594bffe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\GLFW\includes">
+      <UniqueIdentifier>{6e4dd2ac-2fa8-4952-bd26-96fb6554cea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\GLFW\sources">
+      <UniqueIdentifier>{9b746631-b6d1-479a-9c32-bf4d06b72e41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\IMGUI\includes">
+      <UniqueIdentifier>{75c46bb1-d9ac-45ed-b582-34e94817294e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\IMGUI\sources">
+      <UniqueIdentifier>{db89c403-f14d-4d96-a549-6c07b8ee5f0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\STB_IMAGE\includes">
+      <UniqueIdentifier>{4a5febfa-8aab-4890-b0fa-6d8e7627886e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\KHR\includes">
+      <UniqueIdentifier>{6a7a6ee3-9f22-4d6b-b6a9-a4a3843f978e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\Core">
+      <UniqueIdentifier>{a308baa1-7225-4d0b-8009-9ec680fbf321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\Components">
+      <UniqueIdentifier>{250e0a68-9865-4cb3-b495-e13b123398ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\LowRenderer">
+      <UniqueIdentifier>{1ad8a710-db1f-4b06-ad9a-15640183cb6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\Physics">
+      <UniqueIdentifier>{7d163e39-4a24-4608-89f0-94ea1199da29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\Resources">
+      <UniqueIdentifier>{a83372fd-23ed-48b3-aab7-b29a7df0bcf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\Interface">
+      <UniqueIdentifier>{90ebb0cd-cb09-4b1f-9918-c8f63c68d806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\Utils">
+      <UniqueIdentifier>{a655e129-cd1a-4adf-a35e-00445484b2e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\Core">
+      <UniqueIdentifier>{46101654-ba4f-4db1-a90b-19cdb6a2d342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\Components">
+      <UniqueIdentifier>{4359c992-a85e-4229-862d-8159e23424e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\LowRenderer">
+      <UniqueIdentifier>{d46efcbb-bb14-4ed4-a60d-a5dcbe5bb5e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\Interface">
+      <UniqueIdentifier>{5b45c4ae-7a30-4e1c-902c-daaf20093170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\Utils">
+      <UniqueIdentifier>{cc733ace-6a05-42cc-81a3-8361e6f512a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\Resources">
+      <UniqueIdentifier>{fdf8795b-f747-43a5-a343-70be8866af15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\Physics">
+      <UniqueIdentifier>{2fca2452-5417-440f-8a35-8932476b7e0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\Utils\Json">
+      <UniqueIdentifier>{42d1206c-f737-4fc6-a318-1e3172e70eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\Utils\Threading">
+      <UniqueIdentifier>{aecf8d91-977c-4b13-9e69-f4ed26ab028c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\Utils\Json">
+      <UniqueIdentifier>{f8281b85-5ceb-4e74-bd9c-d583e943e516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\Utils\Threading">
+      <UniqueIdentifier>{327f4cd1-2b5a-472e-9449-516c62a81c97}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include <STB_IMAGE/stb_image.h>
-#include <IMGUI/imgui.h>
-#include <IMGUI/imgui_impl_opengl3.h>
-#include <IMGUI/imgui_impl_glfw.h>
+#include <STB_IMAGE/includes/stb_image.h>
+#include <IMGUI/includes/imgui.h>
+#include <IMGUI/includes/imgui_impl_opengl3.h>
+#include <IMGUI/includes/imgui_impl_glfw.h>
 
 #include "Resources/Texture.hpp"
 
@@ -28,10 +28,8 @@ void Texture::Unload() {
 
 void Texture::Load()
 {
-
 	stbi_set_flip_vertically_on_load(true);
 	data = stbi_load(filepath.c_str(), &width, &height, &nrChannels, 0);
-	cout << filepath << endl;
 	
 }
 

@@ -29,7 +29,7 @@ void MainMenu::DisplayGUI(GLFWwindow* _window) {
 	ImGui::SetWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT), 0);
 	ImGui::SetWindowFontScale(2);
 	ImGui::Dummy(ImVec2(0, GUI_HEIGHT / 4));
-	ImGui::Indent(GUI_WIDTH/7);
+	ImGui::Indent(GUI_WIDTH/18);
 
 	TextCentered("Main Menu");
 
@@ -46,8 +46,10 @@ void MainMenu::DisplayGUI(GLFWwindow* _window) {
 	if (ImGui::Button("Restart", ImVec2(150, 100))) {
 		isPressedPlay = true;
 		scene.Destroy();
+		ResourceManager::ReloadResources();
 		scene.Start();
 		firstTime = false;
+
 	}
 
 	ImGui::SameLine();
@@ -60,6 +62,14 @@ void MainMenu::DisplayGUI(GLFWwindow* _window) {
 		glfwSetWindowShouldClose(_window, true);
 	}
 
+	std::string str = ResourceManager::asyncLoading ? "Async [ON]" : "Async [OFF]";
+	const char* c = str.c_str();
+
+	ImGui::SameLine();
+	if (ImGui::Button(c, ImVec2(160, 100))) {
+		ResourceManager::asyncLoading = !ResourceManager::asyncLoading;
+		c = str.c_str();
+	}
 	ImGui::End();
 }
 
