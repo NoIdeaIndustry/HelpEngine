@@ -1,10 +1,13 @@
-[Dd]ebug/
-.vs/
-.vscode/
+[Dd]ebug
+[Bb]uild
+
+.vscode
+.vs
+
+x64/
+
+*.filters
+*.user
 
 imgui.ini
 *.json
-
-*.user
-x64/
-[Bb]uild/
