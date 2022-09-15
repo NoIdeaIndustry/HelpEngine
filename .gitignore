@@ -6,8 +6,7 @@
 
 x64/
 
-*.filters
-*.user
+*vcxproj.user
 
 imgui.ini
 *.json
