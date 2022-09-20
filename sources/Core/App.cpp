@@ -188,10 +188,8 @@ void App::Update() {
 
 		// render
 		// ------
-		if(!mainMenu.isInMenu) 
-			glClearColor(0.f, 0.f, 0.2f, 1.0f); 
-		else
-			glClearColor(0.f, 0.f, 0.0f, 1.0f);
+		
+		glClearColor(0.f, 0.f, 0.0f, 1.0f);
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);

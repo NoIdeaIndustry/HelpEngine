@@ -10,7 +10,7 @@ namespace Resources
 	class Material : public Resource
 	{
 	public:
-		Material(Texture* tex, Core::myMath::Vec3 color, float shiny);
+		Material(Texture* tex, Core::myMath::Vec3 color = Core::myMath::Vec3(), float shiny = 1);
 		void Unload() override;
 
 		void DisplayGUI(int index) override;

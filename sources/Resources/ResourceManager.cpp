@@ -50,6 +50,13 @@ void ResourceManager::Clear() {
 		//std::cout << resource.first << std::endl;
 		delete resource.second;
 	}
+	resourceMap.clear();
+
+	while (!needToBeBinded.empty())
+	{
+		needToBeBinded.pop();
+	}
+	pool.stopPool();
 }
 
 void ResourceManager::DisplayGUI() {
@@ -65,6 +72,8 @@ void ResourceManager::DisplayGUI() {
 	int index = 0;
 	for (std::pair<string, Resource*> resource : resourceMap) {
 		bool headerOpen = ImGui::CollapsingHeader((resource.first + (resource.second->isLoaded ? " true" : " false")).c_str());
+
+		//bool headerOpen = ImGui::CollapsingHeader((resource.first /* + " " + (resource.second->isLoaded ? "true" : "false")*/).c_str());
 
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
 			void** ptr = new void* (resource.second);
@@ -85,6 +94,7 @@ void ResourceManager::DisplayGUI() {
 
 void ResourceManager::InitResourceMap()
 {
+	allResourcesareLoaded = false;
 	std::string path = "resources";
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
 	{
@@ -92,10 +102,10 @@ void ResourceManager::InitResourceMap()
 		
 
 		string extension = (strrchr(entry.path().u8string().c_str(), '.') ? strrchr(entry.path().u8string().c_str(), '.') + 1 : "folder");
-		//cout << entry.path() << endl;
+		cout << entry.path() << endl;
 
 		if (extension == "folder") continue;
-		if (extension == "png")
+		if (extension == "png" || extension == "jpg")
 		{
 			Texture* texture = new Texture(entry.path().u8string());
 			texture->name = filename;
@@ -111,16 +121,16 @@ void ResourceManager::InitResourceMap()
 		}
 		if (extension == "frag")
 		{
-			Shader* model = new Shader(Shader::FRAGMENT, entry.path().u8string());
-			model->name = filename;
-			resourceMap.emplace(filename, model);
+			Shader* shader = new Shader(Shader::FRAGMENT, entry.path().u8string());
+			shader->name = filename;
+			resourceMap.insert(resourceMap.begin(), pair<string, Resource*>(filename, shader));
 			continue;
 		}
 		if (extension == "vert")
 		{
-			Shader* model = new Shader(Shader::VERTEX, entry.path().u8string());
-			model->name = filename;
-			resourceMap.emplace(filename, model);
+			Shader* shader = new Shader(Shader::VERTEX, entry.path().u8string());
+			shader->name = filename;
+			resourceMap.insert(resourceMap.begin(), pair<string, Resource*>(filename, shader));
 			continue;
 		}
 	}
@@ -129,6 +139,11 @@ void ResourceManager::InitResourceMap()
 	Shader* frag = ((Shader*)ResourceManager::Get("FragmentShader.frag"));
 	if (!frag || !vert) return;
 	ResourceManager::Create(new ShaderProgram(vert, frag), "ShaderProgram");
+
+	ResourceManager::Create(new Material(((Texture*)ResourceManager::Get("goomba.png")), Core::myMath::Vec3(1, 1, 1), 1), "goomba mat");
+	ResourceManager::Create(new Material(((Texture*)ResourceManager::Get("sol.png")), Core::myMath::Vec3(1, 1, 1), 1), "ground mat");
+	ResourceManager::Create(new Material(((Texture*)ResourceManager::Get("wall.jpg")), Core::myMath::Vec3(1, 1, 1), 1), "wall mat");
+	ResourceManager::Create(new Material(nullptr, Core::myMath::Vec3(1, 0, 0), 3), "cube mat");
 }
 
 void ResourceManager::UpdateBinding()
@@ -144,31 +159,44 @@ void ResourceManager::UpdateBinding()
 	for (std::pair<string, Resource*> resource : resourceMap)
 	{
 		if (!resource.second->isLoaded)
-			allResourcesareLoaded = false;
+		{
+			allResourcesareLoaded = false; 
+			break;
+		}
 	}
-	if (allResourcesareLoaded) pool.stopPool();
+	if (allResourcesareLoaded)
+	{
+		loadingChronoEnd = std::chrono::high_resolution_clock::now();
+		auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(loadingChronoEnd - loadingChronoStart);
+		float benchmark = elapsed.count() * 1e-9;
+		if (asyncLoading)
+		{
+			DEBUG_LOG("[MultiThread] Resources loading took: " + to_string(benchmark * 1000) + " miliseconds");
+		}
+		else
+		{
+			DEBUG_LOG("[MonoThread] Resources loading took: " + to_string(benchmark * 1000) + " miliseconds");
+		}
+	
+
+		pool.stopPool();
+	}
 }
 
 void ResourceManager::ReloadResources()
 {
-	auto begin = std::chrono::high_resolution_clock::now();
+	loadingChronoStart = std::chrono::high_resolution_clock::now();
 
-	if (asyncLoading) {
 
-		for (int i = 0; i < 5; i++) {
+	
+
+	if (asyncLoading)
+	{
+		pool.startPool();
+
+		pool.getPool().clear();
+		for (int i = 0; i < 3; i++) {
 			pool.registerThread(new NThread::Thread(pool, std::to_string(i)));
-		}
-
-		for (std::pair<string, Resource*> resource : resourceMap)
-		{
-			pool.registerTask(
-				NThread::ResourceTask{
-					[](Resource* r) {
-						r->Load();
-						needToBeBinded.push(r);
-					}, resource.second
-				}
-			);
 		}
 
 		pool.registerTask(
@@ -180,23 +208,42 @@ void ResourceManager::ReloadResources()
 					while (!(frag->isLoaded && vert->isLoaded));
 					needToBeBinded.push(ResourceManager::Get("ShaderProgram"));
 				}, nullptr
-			}
-		);
-	}
-	else {
-		for (std::pair<string, Resource*> resource : resourceMap) {
-			resource.second->Load();
+			});
+
+		for (std::pair<string, Resource*> resource : resourceMap)
+		{
+			/*this_thread::sleep_for(chrono::milliseconds(300)); */
+			if (resource.second->type == Resource::ResourceType::R_SHADERPROGRAM) continue;
+
+			pool.registerTask(
+				NThread::ResourceTask {
+					[](Resource* r) {
+						r->Load();
+						queueMutex.lock();
+						needToBeBinded.push(r);
+						queueMutex.unlock();
+					}, resource.second
+				}
+			);
 		}
+		
+
+		
+	}
+	else
+	{
+		for (std::pair<string, Resource*> resource : resourceMap)
+		{
+			if (resource.second->type == Resource::ResourceType::R_SHADERPROGRAM) continue;
+			resource.second->Load();
+			needToBeBinded.push(resource.second);
+		}
+		needToBeBinded.push(ResourceManager::Get("ShaderProgram"));
+
+		
 	}
 
-	auto end = std::chrono::high_resolution_clock::now();
-	auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-	float benchmark = elapsed.count() * 1e-9;
 
-	if (asyncLoading) {
-		std::cout << "[Async] Resources loading took: " << benchmark << " sec" << std::endl;
-	}
-	else {
-		std::cout << "[Default] Resources loading took: " << benchmark << " sec" << std::endl;
-	}
+	
+	//pool.stopPool();
 }

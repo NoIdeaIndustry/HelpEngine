@@ -72,7 +72,7 @@ void LoadDefaultScene(Scene* scene) {
 	// Initialize a cube.
 	GameObject& cube = scene->Instantiate("cube.obj");
 	cube.AddComponent(new LowRenderer::Mesh((Model*)ResourceManager::Get("cube.obj"),
-		((ShaderProgram*)ResourceManager::Get("ShaderProgram"))));
+		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("cube mat")));
 	cube.AddComponent(new Physics::CubeCollider());
 	cube.AddComponent(new Physics::RigidBody());
 	cube.AddComponent(new Respawnable());
@@ -81,7 +81,7 @@ void LoadDefaultScene(Scene* scene) {
 	// Initialize a wall.
 	GameObject& wall = scene->Instantiate("Wall");
 	wall.AddComponent(new LowRenderer::Mesh((Model*)ResourceManager::Get("cube.obj"),
-		((ShaderProgram*)ResourceManager::Get("ShaderProgram"))));
+		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("wall mat")));
 	wall.AddComponent(new Physics::CubeCollider());
 	wall.transform.position.z = -5;
 	wall.transform.scale = Vec3(5, 5, 1);
@@ -89,7 +89,7 @@ void LoadDefaultScene(Scene* scene) {
 	// Initialize a wall.
 	GameObject& wall1 = scene->Instantiate("Wall1");
 	wall1.AddComponent(new LowRenderer::Mesh((Model*)ResourceManager::Get("cube.obj"),
-		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("Ground Mat")));
+		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("wall mat")));
 	wall1.AddComponent(new Physics::CubeCollider());
 	wall1.transform.position = Vec3(72.5f, 5.8f, 0);
 	wall1.transform.scale = Vec3(1.3f, 4.7f, 10.2f);
@@ -97,7 +97,7 @@ void LoadDefaultScene(Scene* scene) {
 	// Initialize a wall.
 	GameObject& wall2 = scene->Instantiate("Wall2");
 	wall2.AddComponent(new LowRenderer::Mesh((Model*)ResourceManager::Get("cube.obj"),
-		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("Ground Mat")));
+		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("wall mat")));
 	wall2.AddComponent(new Physics::CubeCollider());
 	wall2.transform.position = Vec3(61.6f, 4.1f, 12);
 	wall2.transform.scale = Vec3(9.5f, 7.4f, 1.9f);
@@ -141,7 +141,7 @@ void LoadDefaultScene(Scene* scene) {
 	ground2.transform.rotation = Vec3(25.5, 0, 0);
 	ground2.transform.scale = Vec3(4.4f, 1, 7.6f);
 	ground2.AddComponent(new LowRenderer::Mesh((Model*)ResourceManager::Get("cube.obj"),
-		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("Ground Mat")));
+		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("ground mat")));
 	ground2.AddComponent(new Physics::CubeCollider());
 
 	// Initialize ground.
@@ -150,7 +150,7 @@ void LoadDefaultScene(Scene* scene) {
 	ground3.transform.rotation = Vec3(-23.6, 0, 0);
 	ground3.transform.scale = Vec3(3.7f, 1, 6.1f);
 	ground3.AddComponent(new LowRenderer::Mesh((Model*)ResourceManager::Get("cube.obj"),
-		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("Ground Mat")));
+		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("ground mat")));
 	ground3.AddComponent(new Physics::CubeCollider());
 
 	// Initialize ground.
@@ -159,7 +159,7 @@ void LoadDefaultScene(Scene* scene) {
 	ground4.transform.rotation = Vec3(-0, 0, 0);
 	ground4.transform.scale = Vec3(8.9f, 1, 10.4f);
 	ground4.AddComponent(new LowRenderer::Mesh((Model*)ResourceManager::Get("cube.obj"),
-		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("Ground Mat")));
+		((ShaderProgram*)ResourceManager::Get("ShaderProgram")), (Material*)ResourceManager::Get("ground mat")));
 	ground4.AddComponent(new Physics::CubeCollider());
 
 

@@ -41,12 +41,7 @@ void Camera::UpdateViewProjection() {
 }
 
 void Camera::ManageInput() {
-	/*float speed = 0.4f;
 	
-	if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_2))
-	{
-		gameObject->transform.rotation.x += Input::GetMouseDelta().y * 0.2f;
-	}*/
 }
 
 void Camera::DisplayGUI() {

@@ -77,7 +77,7 @@ void Mesh::Render()
 void Mesh::DisplayGUI() {
 	if(ImGui::CollapsingHeader("Mesh Renderer")) {
 		ImGui::Text("Model : "); ImGui::SameLine();
-		ImGui::Text(model->name.c_str());
+		ImGui::Text(model ? model->isLoaded ? model->name.c_str() : "Loading..." : "null");
 
 		if (ImGui::BeginDragDropTarget()) {
 			// Enable dropping textures onto materials.

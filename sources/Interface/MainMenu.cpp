@@ -25,11 +25,11 @@ void MainMenu::DisplayGUI(GLFWwindow* _window) {
 
 	bool l_ShowWindow;
 	ImGui::Begin(" ", &l_ShowWindow, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);;
-	ImGui::SetWindowPos(ImVec2((Core::App::p_AppSettings.APP_WIDTH - GUI_WIDTH)/2, (Core::App::p_AppSettings.APP_HEIGHT - GUI_HEIGHT)/2), 0);
+	ImGui::SetWindowPos(ImVec2((Core::App::p_AppSettings.APP_WIDTH - GUI_WIDTH) / 2, (Core::App::p_AppSettings.APP_HEIGHT - GUI_HEIGHT) / 2), 0);
 	ImGui::SetWindowSize(ImVec2(GUI_WIDTH, GUI_HEIGHT), 0);
 	ImGui::SetWindowFontScale(2);
 	ImGui::Dummy(ImVec2(0, GUI_HEIGHT / 4));
-	ImGui::Indent(GUI_WIDTH/18);
+	ImGui::Indent(GUI_WIDTH / 18);
 
 	TextCentered("Main Menu");
 
@@ -46,6 +46,8 @@ void MainMenu::DisplayGUI(GLFWwindow* _window) {
 	if (ImGui::Button("Restart", ImVec2(150, 100))) {
 		isPressedPlay = true;
 		scene.Destroy();
+		ResourceManager::Clear();
+		ResourceManager::InitResourceMap();
 		ResourceManager::ReloadResources();
 		scene.Start();
 		firstTime = false;
@@ -62,14 +64,14 @@ void MainMenu::DisplayGUI(GLFWwindow* _window) {
 		glfwSetWindowShouldClose(_window, true);
 	}
 
-	std::string str = ResourceManager::asyncLoading ? "Async [ON]" : "Async [OFF]";
-	const char* c = str.c_str();
 
 	ImGui::SameLine();
-	if (ImGui::Button(c, ImVec2(160, 100))) {
+	if (ImGui::Button(ResourceManager::asyncLoading ? "Async [ON]" : "Async [OFF]", ImVec2(160, 100))) {
 		ResourceManager::asyncLoading = !ResourceManager::asyncLoading;
-		c = str.c_str();
 	}
+
+
+
 	ImGui::End();
 }
 
@@ -78,7 +80,7 @@ void MainMenu::DisplayGUIOptions() {
 	bool l_ShowWindow;
 	ImGui::Begin(" ", &l_ShowWindow, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 	ImGui::SetWindowPos(ImVec2((Core::App::p_AppSettings.APP_WIDTH - GUI_WIDTH) / 2, (Core::App::p_AppSettings.APP_HEIGHT - GUI_HEIGHT) / 2), 0);
-	ImGui::SetWindowSize(ImVec2(GUI_WIDTH+50, GUI_HEIGHT), 0);
+	ImGui::SetWindowSize(ImVec2(GUI_WIDTH + 50, GUI_HEIGHT), 0);
 	ImGui::SetWindowFontScale(2);
 	ImGui::Dummy(ImVec2(0, GUI_HEIGHT / 6));
 	ImGui::Indent(GUI_WIDTH / 26);
@@ -96,7 +98,7 @@ void MainMenu::DisplayGUIOptions() {
 
 
 	ImGui::SameLine();
-	if (ImGui::Button("Left", ImVec2(120, 100))){
+	if (ImGui::Button("Left", ImVec2(120, 100))) {
 		isWaitingToSelect = true;
 		isNewKeyLeft = true;
 	}

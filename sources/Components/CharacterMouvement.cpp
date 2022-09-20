@@ -24,11 +24,15 @@ void CharacterMouvement::Update() {
 		gameObject->transform.rotation.y += Input::GetMouseDelta().x * 0.2f;
 	}
 
-	
+	if (Input::IsKeyDown(GLFW_KEY_E))
+	{
+		DEBUG_LOG("TEST");
+	}
 }  
 
 void CharacterMouvement::Start() {
 	rb = gameObject->GetComponent<Physics::RigidBody>();
+	gameObject->transform.rotation.y = 90;
 	if (!rb) DEBUG_LOGWARNING("No rigidbody in character controller");
 }
 

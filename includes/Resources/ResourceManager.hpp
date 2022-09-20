@@ -5,14 +5,15 @@
 #include <queue>
 #include "Utils/Threading/PoolSystem.hpp"
 #include <Resources/Resource.hpp>
+#include <chrono>
 
 namespace Resources
 {
 	class ResourceManager
 	{
 	public :
-		inline static bool asyncLoading = false;
 
+		inline static bool asyncLoading = true;
 
 		static void DisplayGUI();
 	
@@ -30,7 +31,9 @@ namespace Resources
 		static std::unordered_map<std::string, Resource*> resourceMap;
 		static std::queue<Resource*> needToBeBinded;
 		inline static NThread::Pool pool;
-		inline static bool allResourcesareLoaded;
+		inline static bool allResourcesareLoaded = false;
+		inline static std::chrono::steady_clock::time_point loadingChronoStart, loadingChronoEnd;
+		inline static AtomicMutex queueMutex;
 	};
 }
 

@@ -22,7 +22,18 @@ namespace NThread {
 
 				ResourceTask rt = pPool.queryResourceTask(name);
 				pPool.queryMtx.unlock();
-				rt.task(rt.arg);
+				//std::cout << rt.arg->name << std::endl;
+				//if(rt.task == empty))
+				
+				try
+				{
+					rt.task(rt.arg);
+				}
+				catch (const std::exception&)
+				{
+					continue;
+				}
+				
 			}
 		});
 	}

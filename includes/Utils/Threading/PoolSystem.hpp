@@ -46,13 +46,22 @@ namespace NThread {
 			shouldThreadsStops = true;
 		}
 
+		void startPool() {
+			shouldThreadsStops = false;
+		}
+
 		bool shouldStopPool() {
 			return shouldThreadsStops;
 		}
 
 		void registerTask(ResourceTask task) {
+			if (task.task == nullptr)
+			{
+				return;
+			}
 			taskMtx.lock();
 			tasks.push(task);
+			std::cout << task.arg << std::endl;
 			taskMtx.unlock();
 
 			tasks_cond.notify_one();

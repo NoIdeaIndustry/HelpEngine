@@ -23,6 +23,7 @@ namespace Core::Debug {
 			Error
 		};
 
+		static void Clear();
 		static void Init();
 		static void Update();
 		static void Print(std::string message, logType type = Message);

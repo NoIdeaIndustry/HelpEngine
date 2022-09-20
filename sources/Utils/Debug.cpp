@@ -31,6 +31,7 @@ void Log::Print(string message, logType type) {
 }
 
 void Log::Update() {
+	
 
 	ImGui::Begin("Console", 0, ImGuiWindowFlags_NoMove);
 	CustomInterface::SetConsole();
@@ -60,6 +61,11 @@ void Log::Init() {
 	messageIcon = (Resources::Texture*)Resources::ResourceManager::Get("Message");
 	warningIcon = (Resources::Texture*)Resources::ResourceManager::Get("Warning");
 	errorIcon = (Resources::Texture*)Resources::ResourceManager::Get("Error");
+}
+
+void Log::Clear()
+{
+	logs.clear();
 }
 
 string Log::GetFunctionName(const string& macro) {
