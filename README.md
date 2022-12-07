@@ -24,17 +24,17 @@
 Movement are based on your mouse movement
 ```
 ## Main Menu Preview
-![PNG](./screenshots/main_menu.png)
+![PNG](./Showcase/main_menu.png)
 ## KeyBinds Preview
-![PNG](./screenshots/key_binds.png)
+![PNG](./Showcase/key_binds.png)
 ## Scene Graph
-![PNG](./screenshots/graph.png)
+![PNG](./Showcase/graph.png)
 ## Inspector Preview
-![PNG](./screenshots/inspector.png)
+![PNG](./Showcase/inspector.png)
 ## Resource List Preview
-![PNG](./screenshots/resources_preview.png)
+![PNG](./Showcase/resources_preview.png)
 ## Engine Preview
-![PNG](./screenshots/engine.png)
+![PNG](./Showcase/engine.png)
 
 # Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.<br/>
